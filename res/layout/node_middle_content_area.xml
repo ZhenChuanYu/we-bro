@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <FrameLayout
+        android:id="@+id/content_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/s_bottom"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#000000" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_content_view_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff"
+            android:cacheColorHint="#00000000" />
+
+        <LinearLayout
+            android:id="@+id/url_history_area"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:alpha="0.0"
+            android:background="#000000"
+            android:visibility="gone" >
+
+            <ListView
+                android:id="@+id/listview_history"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:cacheColorHint="#00ffffff" >
+            </ListView>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 下部控制区域 -->
+
+    <LinearLayout
+        android:id="@+id/s_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bottom_op_fresh"
+            android:layout_width="60dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="刷新"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bottom_op_current_history"
+            android:layout_width="60dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="历史"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bottom_op_book_mark"
+            android:layout_width="60dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="书签"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bottom_op_download_manager"
+            android:layout_width="60dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="下载"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bottom_op_setting"
+            android:layout_width="60dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="设置"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bottom_op_more"
+            android:layout_width="60dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="更多"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dip"
+    android:background="#ffffff"
+    android:orientation="vertical" 
+    android:id="@+id/header_area"
+    >
+
+    <!-- url 地址层 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:id="@+id/header_url_container_father"
+        >
+
+        <!-- 获取焦点 -->
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/header_url_input_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@+id/unused_location_search_area" 
+            android:layout_alignParentLeft="true"
+            >
+			
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
+                android:background="@drawable/node_frame_url_input_area" >
+				
+                <ImageView
+                    android:id="@+id/url_indicator"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="6dip"
+                    android:src="@drawable/a4" />
+
+                <EditText
+                    android:id="@+id/url_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@id/url_indicator"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:hint="输入地址"
+                    android:paddingLeft="3dip"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:imeOptions="actionGo"
+                    android:imeActionId="100100"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </LinearLayout>
+        <!-- 假搜索输入框用来占位置 -->
+
+        <RelativeLayout
+            android:id="@+id/unused_location_search_area"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:minWidth="120dip" >
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 搜索地址层 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        >
+		<!-- 获取焦点 -->
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/header_search_input_area"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true" 
+            android:minWidth="120dip"
+            >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dip"
+                android:layout_marginTop="5dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/node_frame_search_input_area"
+                >
+
+                <EditText
+                    android:id="@+id/search_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentTop="true"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:hint="输入关键词"
+                    android:paddingLeft="3dip"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>
