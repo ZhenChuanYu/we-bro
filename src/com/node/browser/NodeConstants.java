@@ -6,7 +6,7 @@ public class NodeConstants {
 	public static final int ID_INPUT_ACTION_URLEDITEXT = 100100;
 	// 搜索框地址栏的软件盘事件ID
 	public static final int ID_INPUT_ACTION_SEARCHEDITEXT = 100101;
-	
+
 	// 所有域名后缀
 	public static final String[] domains = { "com", "cn", "edu", "gov", "net",
 			"hk", "org", "int", "mil", "ad", "ae", "af", "ag", "ai", "al",
