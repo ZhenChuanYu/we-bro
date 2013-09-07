@@ -1,4 +1,4 @@
-package com.imagedownload;
+package com.node.imagedownload;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import com.example.imagedownloadlibrary2.R;
+import com.node.browser.R;
+
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -43,7 +44,7 @@ public class ImageDownload {
 			options.inInputShareable = true;
 
 			default_icon = BitmapFactory.decodeStream(context.getResources()
-					.openRawResource(R.drawable.ic_icon), null, options);
+					.openRawResource(R.drawable.ic_launcher), null, options);
 		}
 	}
 
@@ -51,7 +52,7 @@ public class ImageDownload {
 	 * LRUCache内存缓存
 	 */
 	static final LruCache<String, byte[]> mCache = new LruCache<String, byte[]>(
-			50);
+			80);
 
 	private ImageDownload() {
 	};

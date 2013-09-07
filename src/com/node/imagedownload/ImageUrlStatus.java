@@ -1,4 +1,4 @@
-package com.imagedownload;
+package com.node.imagedownload;
 
 import java.util.HashMap;
 
