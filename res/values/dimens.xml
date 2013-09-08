@@ -4,4 +4,26 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Dialog对话框部分 -->
+    <!-- 对话框宽度 -->
+    <dimen name="dialog_content_width">380dip</dimen>
+    <!-- 对话框高度 -->
+    <dimen name="dialog_content_height">180dip</dimen>
+    <!-- 对话框标题字体 -->
+    <dimen name="dialog_title_textsize">16sp</dimen>
+    <!-- 对话框内容字体 -->
+    <dimen name="dialog_content_textsize">12sp</dimen>
+    <!-- 对话框按钮字体 -->
+    <dimen name="dialog_btn_textsize">12sp</dimen>
+    <!-- 对话框按钮颜色 -->
+    <color name="dialog_btn_textcolor">#000000</color>
+    <!-- 对话框标题颜色 -->
+    <color name="dialog_title_color">#505050</color>
+    <!-- 对话框内容颜色 -->
+    <color name="dialog_content_color">#707070</color>
+    <!-- 对话框checkbox字体 -->
+    <dimen name="dialog_checkbox_textsize">12sp</dimen>
+    <!-- 对话框checkbox字颜色 -->
+    <color name="dialog_checkbox_textcolor">#67a092</color>
+
 </resources>

@@ -24,14 +24,28 @@
             android:configChanges="orientation|keyboardHidden|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- splash页 -->
         <activity
             android:name="com.node.browser.activity.dialogs.ActivitySplash"
-            android:theme="@style/NodeDialogSplashTheme"
-            android:configChanges="orientation|keyboardHidden|screenSize" 
-            >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/NodeDialogTheme" >
+        </activity>
+        <!-- 普通 确认-取消-dialog -->
+        <activity
+            android:name="com.node.browser.activity.dialogs.ActivityECDialog"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/NodeDialogTheme" >
+        </activity>
+        <!-- 含有checkbox复选框 确认-取消-dialog -->
+        <activity
+            android:name="com.node.browser.activity.dialogs.ActivityECCheckBoxDialog"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/NodeDialogTheme" >
         </activity>
     </application>
 

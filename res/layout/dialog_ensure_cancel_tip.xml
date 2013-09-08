@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00ffffff"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical" >
+	<!-- 顶层容器alpha初始值为0 -->
+    <RelativeLayout
+        android:id="@+id/dialog_ensure_cancel_container"
+        android:layout_width="@dimen/dialog_content_width"
+        android:layout_height="@dimen/dialog_content_height"
+        android:alpha="0"
+        android:background="#a0a0a0"
+        android:orientation="vertical" >
+
+        <!-- 对话框标题栏 -->
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="fill_parent"
+            android:layout_height="25dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:layout_marginTop="10dip"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:text="this is title area"
+            android:textColor="@color/dialog_title_color"
+            android:textSize="@dimen/dialog_title_textsize" />
+        <!-- 对话框内容栏 -->
+
+        <TextView
+            android:id="@+id/dialog_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dialog_operation_area"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/dialog_title"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:gravity="left|center_vertical"
+            android:text="this is content area"
+            android:textColor="@color/dialog_content_color"
+            android:textSize="@dimen/dialog_content_textsize" />
+        <!-- 对话框可操作区域 -->
+
+        <LinearLayout
+            android:id="@+id/dialog_operation_area"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:orientation="horizontal" >
+
+            <!-- 确认按钮 -->
+
+            <Button
+                android:id="@+id/dialog_btn_ensure"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_weight="1"
+                android:text="ensure"
+                android:textColor="@color/dialog_btn_textcolor"
+                android:textSize="@dimen/dialog_btn_textsize" />
+            <!-- 取消按钮 -->
+
+            <Button
+                android:id="@+id/dialog_btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_weight="1"
+                android:text="cancel"
+                android:textColor="@color/dialog_btn_textcolor"
+                android:textSize="@dimen/dialog_btn_textsize" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

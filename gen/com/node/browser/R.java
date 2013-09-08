@@ -10,6 +10,20 @@ package com.node.browser;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        /**  对话框按钮颜色 
+         */
+        public static final int dialog_btn_textcolor=0x7f050000;
+        /**  对话框checkbox字颜色 
+         */
+        public static final int dialog_checkbox_textcolor=0x7f050003;
+        /**  对话框内容颜色 
+         */
+        public static final int dialog_content_color=0x7f050002;
+        /**  对话框标题颜色 
+         */
+        public static final int dialog_title_color=0x7f050001;
+    }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
 
@@ -19,6 +33,25 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f040000;
         public static final int activity_vertical_margin=0x7f040001;
+        /**  对话框按钮字体 
+         */
+        public static final int dialog_btn_textsize=0x7f040006;
+        /**  对话框checkbox字体 
+         */
+        public static final int dialog_checkbox_textsize=0x7f040007;
+        /**  对话框高度 
+         */
+        public static final int dialog_content_height=0x7f040003;
+        /**  对话框内容字体 
+         */
+        public static final int dialog_content_textsize=0x7f040005;
+        /**  Dialog对话框部分 
+ 对话框宽度 
+         */
+        public static final int dialog_content_width=0x7f040002;
+        /**  对话框标题字体 
+         */
+        public static final int dialog_title_textsize=0x7f040004;
     }
     public static final class drawable {
         public static final int a4=0x7f020000;
@@ -28,47 +61,56 @@ public final class R {
         public static final int temp_node_logo=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f080018;
-        public static final int bottom_op_book_mark=0x7f080013;
-        public static final int bottom_op_current_history=0x7f080012;
-        public static final int bottom_op_download_manager=0x7f080014;
-        public static final int bottom_op_fresh=0x7f080011;
-        public static final int bottom_op_more=0x7f080016;
-        public static final int bottom_op_setting=0x7f080015;
-        public static final int content_container=0x7f08000c;
-        public static final int header_area=0x7f080004;
-        public static final int header_search_input_area=0x7f08000a;
-        public static final int header_url_container_father=0x7f080005;
-        public static final int header_url_input_container=0x7f080006;
-        public static final int listview_history=0x7f080010;
-        public static final int node_webview=0x7f080017;
-        public static final int s_bottom=0x7f08000d;
-        public static final int search_content=0x7f08000b;
-        public static final int splash_dialog_bg_area=0x7f080000;
-        public static final int splash_node_logo=0x7f080001;
-        public static final int splash_node_logo_name=0x7f080002;
-        public static final int unused_location_search_area=0x7f080007;
-        public static final int url_content=0x7f080009;
-        public static final int url_history_area=0x7f08000f;
-        public static final int url_indicator=0x7f080008;
-        public static final int viewpager_content_view_container=0x7f08000e;
-        public static final int webview=0x7f080003;
+        public static final int action_settings=0x7f09001f;
+        public static final int bottom_op_book_mark=0x7f09001a;
+        public static final int bottom_op_current_history=0x7f090019;
+        public static final int bottom_op_download_manager=0x7f09001b;
+        public static final int bottom_op_fresh=0x7f090018;
+        public static final int bottom_op_more=0x7f09001d;
+        public static final int bottom_op_setting=0x7f09001c;
+        public static final int content_container=0x7f090013;
+        public static final int dialog_btn_cancel=0x7f090006;
+        public static final int dialog_btn_ensure=0x7f090005;
+        public static final int dialog_checkbox=0x7f090003;
+        public static final int dialog_content=0x7f090002;
+        public static final int dialog_ensure_cancel_container=0x7f090000;
+        public static final int dialog_operation_area=0x7f090004;
+        public static final int dialog_title=0x7f090001;
+        public static final int header_area=0x7f09000b;
+        public static final int header_search_input_area=0x7f090011;
+        public static final int header_url_container_father=0x7f09000c;
+        public static final int header_url_input_container=0x7f09000d;
+        public static final int listview_history=0x7f090017;
+        public static final int node_webview=0x7f09001e;
+        public static final int s_bottom=0x7f090014;
+        public static final int search_content=0x7f090012;
+        public static final int splash_dialog_bg_area=0x7f090007;
+        public static final int splash_node_logo=0x7f090008;
+        public static final int splash_node_logo_name=0x7f090009;
+        public static final int unused_location_search_area=0x7f09000e;
+        public static final int url_content=0x7f090010;
+        public static final int url_history_area=0x7f090016;
+        public static final int url_indicator=0x7f09000f;
+        public static final int viewpager_content_view_container=0x7f090015;
+        public static final int webview=0x7f09000a;
     }
     public static final class layout {
-        public static final int dialog_splash=0x7f030000;
-        public static final int laout_main=0x7f030001;
-        public static final int node_bottom_nav_area=0x7f030002;
-        public static final int node_frag_firstpage=0x7f030003;
-        public static final int node_header_input_area=0x7f030004;
-        public static final int node_middle_content_area=0x7f030005;
-        public static final int node_webview_item=0x7f030006;
+        public static final int dialog_ensure_cancel_checkbox_tip=0x7f030000;
+        public static final int dialog_ensure_cancel_tip=0x7f030001;
+        public static final int dialog_splash=0x7f030002;
+        public static final int laout_main=0x7f030003;
+        public static final int node_bottom_nav_area=0x7f030004;
+        public static final int node_frag_firstpage=0x7f030005;
+        public static final int node_header_input_area=0x7f030006;
+        public static final int node_middle_content_area=0x7f030007;
+        public static final int node_webview_item=0x7f030008;
     }
     public static final class menu {
-        public static final int activity_main=0x7f070000;
+        public static final int activity_main=0x7f080000;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
-        public static final int application_name=0x7f050000;
+        public static final int action_settings=0x7f060001;
+        public static final int application_name=0x7f060000;
     }
     public static final class style {
         /** 
@@ -92,10 +134,12 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
-        public static final int NodeDialogSplashTheme=0x7f060002;
+        public static final int AppBaseTheme=0x7f070000;
+        /**  splash页theme 
+         */
+        public static final int NodeDialogTheme=0x7f070002;
         /**  Application theme. 
          */
-        public static final int NodeTheme=0x7f060001;
+        public static final int NodeTheme=0x7f070001;
     }
 }

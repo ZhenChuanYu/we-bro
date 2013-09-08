@@ -3,11 +3,14 @@ package com.node.browser;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.node.browser.activity.dialogs.ActivityECCheckBoxDialog;
+import com.node.browser.activity.dialogs.ActivityECDialog;
 import com.node.browser.activity.dialogs.DialogUtil;
 import com.node.browser.fragment.FragFirstPage;
 import com.node.browser.fragment.NFragment;
 import com.node.log.NLog;
 import com.node.util.GlobalUtil;
+import com.node.util.PrefUtil;
 import com.node.util.UIUtil;
 
 import android.os.Bundle;
@@ -80,12 +83,44 @@ public class ActivityMain extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		GlobalUtil.setFullScreen(this);
+		PrefUtil.initPreferenceUtil(this);
+
 		setContentView(R.layout.laout_main);
 		initView();
 		initAction();
 		initData(savedInstanceState);
 		// test
 		DialogUtil.showSplashDialog(this);
+		// test
+		DialogUtil.showEnsureCancelDialog(this, "测试标题", "测试内容",
+				new ActivityECDialog.ItfEnsureCallback() {
+					@Override
+					public void onEnsureClick(Activity activity) {
+						((ActivityECDialog) activity).dismiss();
+					}
+				}, new ActivityECDialog.ItfCancelCallback() {
+					@Override
+					public void onCancelClick(Activity activity) {
+						((ActivityECDialog) activity).dismiss();
+					}
+				});
+		// test
+		DialogUtil.showECCheckBoxDialog(this, "测试CheckBox", "测试内容",
+				"测试的checkbox内容", "key_setting",
+				new ActivityECCheckBoxDialog.ItfCancelCallback() {
+
+					@Override
+					public void onCancelClick(Activity activity,
+							boolean isChecked) {
+						((ActivityECCheckBoxDialog) activity).dismiss();
+					}
+				}, new ActivityECCheckBoxDialog.ItfEnsureCallback() {
+					@Override
+					public void onEnsureClick(Activity activity,
+							boolean isChecked) {
+						((ActivityECCheckBoxDialog) activity).dismiss();
+					}
+				});
 	}
 
 	@Override
@@ -172,14 +207,14 @@ public class ActivityMain extends FragmentActivity {
 	 */
 
 	protected void handleUrlInput(String text) {
-		if(GlobalUtil.ifEndWithDomain(text, false)){
-			//如果url的后缀名符合.com .cn .org,则跳转到页面
-			
-		}else{
-			
+		if (GlobalUtil.ifEndWithDomain(text, false)) {
+			// 如果url的后缀名符合.com .cn .org,则跳转到页面
+
+		} else {
+
 		}
 	}
-	
+
 	protected void doSearchKeywords() {
 
 	}

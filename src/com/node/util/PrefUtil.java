@@ -13,7 +13,7 @@ import android.preference.PreferenceManager;
  * to create {@link PrefUtil} instance
  * 
  * @see {@link PrefFactory}
- * @author yuzhenchuan
+ * @author zhenchuan
  */
 public class PrefUtil {
 	protected static Context mContext;
@@ -109,7 +109,7 @@ public class PrefUtil {
 		 *            {@link ElementConstants}
 		 * @return
 		 */
-		private static PrefUtil createForAttributeName(String att_name) {
+		public static PrefUtil createForAttributeName(String att_name) {
 			if (mContext == null) {
 				NLog.e(null, "mContext is null");
 				throw new IllegalArgumentException(" mContext is null");
