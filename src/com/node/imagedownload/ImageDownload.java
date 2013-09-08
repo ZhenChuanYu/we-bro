@@ -14,6 +14,7 @@ import java.net.URLConnection;
 
 import com.node.browser.R;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,7 +35,13 @@ public class ImageDownload {
 			.getExternalStorageDirectory() + "/NodeBrowser/largeImg/";
 
 	private static Bitmap default_icon;
+	private static File cacheDir;
 
+	/**
+	 * 初始化默认图片，用于显示缺省图片
+	 * 
+	 * @param context
+	 */
 	private static void initData(Context context) {
 		if (default_icon == null) {
 			BitmapFactory.Options options = new BitmapFactory.Options();
@@ -47,11 +54,21 @@ public class ImageDownload {
 		}
 	}
 
+	/**
+	 * 创建缓存目录
+	 */
+	private static void createDirectory() {
+		cacheDir = new File(rootPath);
+		if (!cacheDir.exists()) {
+			cacheDir.mkdirs();
+		}
+	}
+
 	/*
 	 * LRUCache内存缓存
 	 */
 	static final LruCache<String, byte[]> mCache = new LruCache<String, byte[]>(
-			80);
+			50);
 
 	private ImageDownload() {
 	};
@@ -62,6 +79,7 @@ public class ImageDownload {
 		if (mImageDownload == null) {
 			mImageDownload = new ImageDownload();
 			initData(context);
+			createDirectory();
 		}
 		return mImageDownload;
 	}
