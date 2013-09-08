@@ -6,7 +6,7 @@ public class StrUtil {
 	static String[] domains = NodeConstants.domains;
 
 	/**
-	 * 判断是否是合法域名
+	 * 判断是否是合法域名,Test
 	 * @param inputStr
 	 * @param trimInput
 	 * @return
