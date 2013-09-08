@@ -17,7 +17,7 @@ import android.widget.TextView;
 /**
  * 1.包含一个checkbox选择框 2.包含显示标题、内容和具有取消、确认操作的基本对话框<br>
  * 3.在DialogUtil中使用
- * {@code DialogUtil#showEnsureCancelDialog(Activity, String, String, ItfEnsureCallback, ItfCancelCallback)}
+ * {@code DialogUtil#showECCheckBoxDialog(Activity, String, String, String, String, ItfCancelCallback, ItfEnsureCallback)
  * <br>
  * 4.ECCheckBoxDialog 为EnsureCancelCheckBoxDialog的简称<br>
  * 
@@ -79,8 +79,8 @@ public class ActivityECCheckBoxDialog extends Activity {
 				boolean value = mCheckbox.isChecked();
 				setPreferenceValue(value);
 				if (mEnsureCallback != null) {
-					mEnsureCallback
-							.onEnsureClick(ActivityECCheckBoxDialog.this,value);
+					mEnsureCallback.onEnsureClick(
+							ActivityECCheckBoxDialog.this, value);
 				}
 			}
 		});
@@ -91,8 +91,8 @@ public class ActivityECCheckBoxDialog extends Activity {
 				boolean value = mCheckbox.isChecked();
 				setPreferenceValue(value);
 				if (mCancelCallback != null) {
-					mCancelCallback
-							.onCancelClick(ActivityECCheckBoxDialog.this,value);
+					mCancelCallback.onCancelClick(
+							ActivityECCheckBoxDialog.this, value);
 				}
 			}
 		});
