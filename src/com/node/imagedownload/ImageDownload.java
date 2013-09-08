@@ -14,7 +14,6 @@ import java.net.URLConnection;
 
 import com.node.browser.R;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -240,7 +239,7 @@ public class ImageDownload {
 
 		@Override
 		protected void onPostExecute(final ImageDownloadItem result) {
-			if (catchDataFlow(result.data)) {
+			if (!catchDataFlow(result.data)) {
 				ImageUrlStatus.setUrlRequeststatus(result.mUrl,
 						ImageUrlStatus.STATUS_REQUESTED_ERROR);
 				Log.e("zhenchuan", "data is null");
@@ -327,7 +326,7 @@ public class ImageDownload {
 				int readLength = 0;
 				bos = new ByteArrayOutputStream();
 				while ((count = is.read(buffer)) != -1) {
-					bos.write(buffer, 0, readLength);
+					bos.write(buffer, 0, count);
 					readLength += count;
 					publishProgress((int) (readLength * 100 / bytesLength));
 				}
