@@ -1,18 +1,35 @@
 package com.node.browser.fragment;
 
-import java.io.Serializable;
+import com.node.browser.webviewmanager.NWebview;
 
-import com.node.browser.customviews.NWebview;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.webkit.WebView;
 
-public class NFragment extends Fragment implements Serializable {
+public class NFragment extends Fragment {
 
 	protected NWebview webView;
+
+	protected InvokerAfterInit invoker;// 初始化webview之后的回调
+
+	public NWebview getWebview() {
+		return this.webView;
+	}
+
+	public void setInvokerAfterInit(InvokerAfterInit invoker) {
+		this.invoker = invoker;
+	}
+
 	/**
+	 * 在WebView初始化后执行
+	 * 
+	 * @author zhenchuan
 	 * 
 	 */
-	private static final long serialVersionUID = 577422916170432908L;
+	public interface InvokerAfterInit {
+		void loadWithUrl(WebView webview);
+
+		void loadWithMessage(WebView webview);
+	}
+
 }

@@ -8,6 +8,7 @@ import com.node.browser.activity.dialogs.ActivityECDialog;
 import com.node.browser.activity.dialogs.DialogUtil;
 import com.node.browser.fragment.FragFirstPage;
 import com.node.browser.fragment.NFragment;
+import com.node.browser.webviewmanager.WebViewManager;
 import com.node.log.NLog;
 import com.node.util.GlobalUtil;
 import com.node.util.PrefUtil;
@@ -133,26 +134,21 @@ public class ActivityMain extends FragmentActivity {
 	}
 
 	private void initData(Bundle state) {
-		/*
-		 * if (state != null) { mFragHolder = (FragmentHolder) state
-		 * .getSerializable(STATE_KEY_FRAGS); if (mFragHolder != null) { mFrags
-		 * = mFragHolder.frags; } mAdapter = (FragAdapter) state
-		 * .getSerializable(STATE_KEY_FRAGADAPTER); }
-		 */
-		// if (mFrags == null) {
-		// 初始化所需的Fragment
-		initFrags();
-		// }
-		// if (mAdapter == null) {
+		// 初始化基础Fragment
+		initBaseFrags();
+		// 初始化Adapter
 		mAdapter = new FragAdapter(getSupportFragmentManager());
-		// }
+		//初始化webview管理器
+		WebViewManager.instance().initFields(mAdapter, mFrags);
+		WebViewManager.instance().loadingUrlInNewWindow("http://www.baidu.com");
+		//设置数据源
 		mViewPager.setAdapter(mAdapter);
 	}
 
 	NFragment firstPage;// 首页
 	NFragment secondPage;
 
-	private void initFrags() {
+	private void initBaseFrags() {
 		mFrags = new ArrayList<NFragment>();
 		firstPage = new FragFirstPage();
 		secondPage = new FragFirstPage();
@@ -552,7 +548,7 @@ public class ActivityMain extends FragmentActivity {
 	 * Fragment相关
 	 */
 
-	class FragAdapter extends FragmentPagerAdapter implements Serializable {
+	public class FragAdapter extends FragmentPagerAdapter implements Serializable {
 		/**
 		 * 
 		 */

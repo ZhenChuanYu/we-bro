@@ -1,9 +1,7 @@
 package com.node.browser.fragment;
 
 import com.node.browser.R;
-import com.node.browser.customcomponents.NWebChromeClient;
-import com.node.browser.customcomponents.NWebViewClient;
-import com.node.browser.customviews.NWebview;
+import com.node.browser.webviewmanager.NWebview;
 import com.node.log.NLog;
 
 import android.annotation.SuppressLint;
@@ -28,7 +26,7 @@ public class FragFirstPage extends NFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.node_frag_firstpage, container, false);
+		return inflater.inflate(R.layout.node_frag_basepage, container, false);
 	}
 	
 	@Override
@@ -40,8 +38,8 @@ public class FragFirstPage extends NFragment {
 	}
 	
 	private void initWebview(NWebview webView2) {
-		webView2.setNWebChromeClient(new NWebChromeClient());
-		webView2.setNWebViewClient(new NWebViewClient());
+//		webView2.setNWebChromeClient(new NWebChromeClient());
+//		webView2.setNWebViewClient(new NWebViewClient());
 	}
 	
 	@Override
