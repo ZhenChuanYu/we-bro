@@ -33,8 +33,8 @@ public class FragBaseWebviewPage extends NFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		webView = (NWebview) view.findViewById(R.id.webview);
 		initWebview(webView);
-		
-		if(invoker!=null){
+
+		if (invoker != null) {
 			invoker.loadWithMessage(webView);
 			invoker.loadWithUrl(webView);
 		}
@@ -45,9 +45,9 @@ public class FragBaseWebviewPage extends NFragment {
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				// return super.shouldOverrideUrlLoading(view, url);
 				view.loadUrl(url);
-				return true;
+				//必须return false
+				return false;
 			}
 
 			@Override
@@ -79,5 +79,6 @@ public class FragBaseWebviewPage extends NFragment {
 				return true;
 			}
 		});
+		
 	}
 }

@@ -60,6 +60,7 @@ public class WebViewManager {
 			public void loadWithMessage(WebView webview) {
 				WebView.WebViewTransport transfer = (WebView.WebViewTransport) resultMsg.obj;
 				transfer.setWebView(webview);
+				resultMsg.sendToTarget();
 			}
 		});
 		mFrags.add(newPage);

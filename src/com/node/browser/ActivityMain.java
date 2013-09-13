@@ -7,6 +7,7 @@ import com.node.browser.activity.dialogs.ActivityECCheckBoxDialog;
 import com.node.browser.activity.dialogs.ActivityECDialog;
 import com.node.browser.activity.dialogs.DialogUtil;
 import com.node.browser.fragment.FragFirstPage;
+import com.node.browser.fragment.FragSecondPage;
 import com.node.browser.fragment.NFragment;
 import com.node.browser.webviewmanager.WebViewManager;
 import com.node.log.NLog;
@@ -140,6 +141,7 @@ public class ActivityMain extends FragmentActivity {
 		mAdapter = new FragAdapter(getSupportFragmentManager());
 		//初始化webview管理器
 		WebViewManager.instance().initFields(mAdapter, mFrags);
+		//test
 		WebViewManager.instance().loadingUrlInNewWindow("http://www.baidu.com");
 		//设置数据源
 		mViewPager.setAdapter(mAdapter);
@@ -151,7 +153,7 @@ public class ActivityMain extends FragmentActivity {
 	private void initBaseFrags() {
 		mFrags = new ArrayList<NFragment>();
 		firstPage = new FragFirstPage();
-		secondPage = new FragFirstPage();
+		secondPage = new FragSecondPage();
 		mFrags.add(firstPage);
 		mFrags.add(secondPage);
 	}

@@ -1,5 +1,6 @@
 package com.node.browser.webviewmanager;
 
+import com.node.browser.NodeConstants;
 import com.node.util.GlobalUtil;
 
 import android.content.Context;
@@ -37,8 +38,10 @@ public class NWebview extends WebView {
 		WebSettings settings = getSettings();
 		settings.setJavaScriptEnabled(true);
 		settings.setJavaScriptCanOpenWindowsAutomatically(true);
+		settings.setSupportMultipleWindows(true);
 		settings.setDomStorageEnabled(true);
 		settings.setDisplayZoomControls(true);
+		settings.setUserAgentString(NodeConstants.UA_CHROME);
 		/*
 		 * settings.setDefaultZoom(ZoomDensity.FAR);
 		 */
