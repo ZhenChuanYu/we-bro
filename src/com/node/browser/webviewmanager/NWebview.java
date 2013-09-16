@@ -3,11 +3,13 @@ package com.node.browser.webviewmanager;
 import com.node.browser.NodeConstants;
 import com.node.util.GlobalUtil;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebSettings.PluginState;
 
 public class NWebview extends WebView {
 
@@ -34,6 +36,7 @@ public class NWebview extends WebView {
 		// setWebChromeClient();
 	}
 
+	@SuppressLint("NewApi")
 	private void initSettings() {
 		WebSettings settings = getSettings();
 		settings.setJavaScriptEnabled(true);
@@ -41,6 +44,12 @@ public class NWebview extends WebView {
 		settings.setSupportMultipleWindows(true);
 		settings.setDomStorageEnabled(true);
 		settings.setDisplayZoomControls(true);
+		settings.setUseWideViewPort(true);
+		if(android.os.Build.VERSION.SDK_INT>=16){
+			settings.setAllowUniversalAccessFromFileURLs(true);
+			settings.setAllowFileAccessFromFileURLs(true);
+		}
+		settings.setPluginState(PluginState.ON);
 		settings.setUserAgentString(NodeConstants.UA_CHROME);
 		/*
 		 * settings.setDefaultZoom(ZoomDensity.FAR);

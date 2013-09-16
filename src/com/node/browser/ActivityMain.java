@@ -32,6 +32,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -139,12 +141,13 @@ public class ActivityMain extends FragmentActivity {
 		initBaseFrags();
 		// 初始化Adapter
 		mAdapter = new FragAdapter(getSupportFragmentManager());
-		//初始化webview管理器
-		WebViewManager.instance().initFields(mAdapter, mFrags);
-		//test
-		WebViewManager.instance().loadingUrlInNewWindow("http://www.baidu.com");
-		//设置数据源
+		// 设置数据源
 		mViewPager.setAdapter(mAdapter);
+		// 初始化webview管理器
+		WebViewManager.instance().initFields(mAdapter, mFrags, mViewPager);
+		// test
+		WebViewManager.instance().loadingUrlInNewWindow("http://www.baidu.com",
+				null);
 	}
 
 	NFragment firstPage;// 首页
@@ -241,11 +244,11 @@ public class ActivityMain extends FragmentActivity {
 			@Override
 			public void onAnimationStart(Animation animation) {
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mSearchContainer.clearAnimation();
@@ -550,7 +553,8 @@ public class ActivityMain extends FragmentActivity {
 	 * Fragment相关
 	 */
 
-	public class FragAdapter extends FragmentPagerAdapter implements Serializable {
+	public class FragAdapter extends FragmentStatePagerAdapter implements
+			Serializable {
 		/**
 		 * 
 		 */
@@ -573,9 +577,29 @@ public class ActivityMain extends FragmentActivity {
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			// do nothing
-			// super.destroyItem(container, position, object);
 		}
 
+		@Override
+		public Object instantiateItem(View container, int position) {
+			return super.instantiateItem(container, position);
+		}
+
+		@Override
+		public int getItemPosition(Object object) {
+//			NLog.e("adapter", "getItemPosition is in");
+//			if (object instanceof NFragment) {
+//				NFragment nFrag = (NFragment) object;
+//				if (nFrag.isNewUUID(true)) {
+//					NLog.e("adapter", "position none" + "UUID is " + nFrag.UUID);
+//					return PagerAdapter.POSITION_NONE;
+//				} else {
+//					NLog.e("adapter", "position unchanged" + "UUID is "
+//							+ nFrag.UUID);
+//					return PagerAdapter.POSITION_UNCHANGED;
+//				}
+//			}
+			return super.getItemPosition(object);
+		}
 	}
 
 	/*

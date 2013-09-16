@@ -32,5 +32,6 @@ public class NodeConstants {
 			"us", "uy", "va", "vc", "ve", "vn", "vu", "wf", "ws", "ye", "yu",
 			"za", "zm", "zr", "zw" };
 
-	public static final String UA_CHROME = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; en-US) AppleWebKit/533.3 (KHTML, like Gecko) Chrome/5.0.354.0 Safari/533.3";
+	public static final String UA_NODE = "Mozilla/5.0 (Android; U; Android4.0) AppleWebKit/525.13 (KHTML, like Gecko) Node/1.0.1 Safari/525.13";
+	public static final String UA_CHROME="Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/525.13" ;
 }

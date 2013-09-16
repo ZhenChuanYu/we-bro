@@ -1,5 +1,8 @@
 package com.node.browser.fragment;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.node.browser.R;
 import com.node.browser.webviewmanager.NWebview;
 import com.node.browser.webviewmanager.WebViewManager;
@@ -14,6 +17,8 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebView.HitTestResult;
+import android.widget.LinearLayout;
 
 public class FragBaseWebviewPage extends NFragment {
 	private final static String TAG = FragBaseWebviewPage.class.getName();
@@ -31,7 +36,10 @@ public class FragBaseWebviewPage extends NFragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		NLog.e(TAG, "NFragment onViewCreated is in");
 		webView = (NWebview) view.findViewById(R.id.webview);
+		mWebviewContainer = (LinearLayout) view
+				.findViewById(R.id.webview_container);
 		initWebview(webView);
 
 		if (invoker != null) {
@@ -45,9 +53,13 @@ public class FragBaseWebviewPage extends NFragment {
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				view.loadUrl(url);
-				//必须return false
-				return false;
+				if (url.startsWith("newwindow:")) {
+					WebViewManager.instance().loadingUrlInNewWindow(
+							url.substring(10), FragBaseWebviewPage.this);
+				} else {
+					view.loadUrl(url); // load url in current WebView
+				}
+				return true;
 			}
 
 			@Override
@@ -57,7 +69,7 @@ public class FragBaseWebviewPage extends NFragment {
 
 			@Override
 			public void onPageFinished(WebView view, String url) {
-				super.onPageFinished(view, url);
+				view.loadUrl("javascript: var allLinks = document.getElementsByTagName('a'); if (allLinks) {var i;for (i=0; i<allLinks.length; i++) {var link = allLinks[i];var target = link.getAttribute('target'); if (target && target == '_blank') {link.setAttribute('target','_self');link.href = 'newwindow:'+link.href;}}}");
 			}
 		});
 
@@ -75,10 +87,78 @@ public class FragBaseWebviewPage extends NFragment {
 				} else {
 					NLog.e(TAG, "new window 不是用户点击链接");
 				}
-				WebViewManager.instance().loadingUrlInNewWindow(resultMsg);
+				// WebViewManager.instance().loadingUrlInNewWindow(resultMsg);
 				return true;
 			}
 		});
-		
+
 	}
+
+	private FragBaseWebviewPage child = null;
+
+	public FragBaseWebviewPage getChild() {
+		return child;
+	}
+
+	public void setChild(FragBaseWebviewPage child) {
+		this.child = child;
+	}
+
+	/**
+	 * 是否有子儿子
+	 * 
+	 * @return
+	 */
+	public boolean hasChild() {
+		return child != null;
+	}
+
+	/**
+	 * 停止子节点的Webview
+	 */
+	public void stopChildWebview() {
+		if (child == null) {
+			return;
+		} else {
+			child.stopChildWebview();
+			NLog.e("null", child.webView == null ? "webview is null"
+					: "webview is not null");
+			NLog.e("null", child.mWebviewContainer == null ? "null"
+					: "mWebviewContainer is not null");
+			child.mWebviewContainer.removeView(child.webView);
+			child.webView.removeAllViews();
+			child.webView.clearHistory();
+			child.webView.destroy();
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		NLog.e(TAG, "onDetach is in");
+		super.onDetach();
+	}
+
+	/**
+	 * 移除子节点
+	 */
+	public void removeChild(ArrayList<NFragment> dataSouce) {
+		if (this.child == null) {
+			return;
+		} else {
+			this.child.removeChild(dataSouce);
+			Iterator<NFragment> it = dataSouce.iterator();
+			while (it.hasNext()) {
+				NFragment nFrag = it.next();
+				if (nFrag.UUID.equals(this.child.UUID)) {
+					NLog.i(TAG, "NFragment: UUID is " + this.child.UUID
+							+ " removed");
+					nFrag.deleteUUID();
+					it.remove();
+					this.child = null;
+					break;
+				}
+			}
+		}
+	}
+
 }

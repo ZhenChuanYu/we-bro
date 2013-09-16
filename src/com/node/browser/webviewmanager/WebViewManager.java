@@ -3,6 +3,7 @@ package com.node.browser.webviewmanager;
 import java.util.ArrayList;
 
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.webkit.WebView;
 
 import com.node.browser.ActivityMain.FragAdapter;
@@ -20,6 +21,7 @@ public class WebViewManager {
 	private static WebViewManager mManager;
 	private FragAdapter mFragAdapter;
 	private ArrayList<NFragment> mFrags;
+	private ViewPager mViewPager;
 
 	private WebViewManager() {
 	};
@@ -37,9 +39,11 @@ public class WebViewManager {
 	 * @param adapter
 	 * @param dataSource
 	 */
-	public void initFields(FragAdapter adapter, ArrayList<NFragment> dataSource) {
+	public void initFields(FragAdapter adapter,
+			ArrayList<NFragment> dataSource, ViewPager viewPager) {
 		this.mFragAdapter = adapter;
 		this.mFrags = dataSource;
+		this.mViewPager = viewPager;
 	}
 
 	/**
@@ -72,7 +76,8 @@ public class WebViewManager {
 	 * 
 	 * @param url
 	 */
-	public void loadingUrlInNewWindow(final String url) {
+	public void loadingUrlInNewWindow(final String url,
+			FragBaseWebviewPage parent) {
 		FragBaseWebviewPage newPage = new FragBaseWebviewPage();
 		newPage.setInvokerAfterInit(new NFragment.InvokerAfterInit() {
 			@Override
@@ -87,6 +92,29 @@ public class WebViewManager {
 		});
 		mFrags.add(newPage);
 		mFragAdapter.notifyDataSetChanged();
+		mViewPager.setCurrentItem(mFrags.size() - 1, false);
+		
+		if (parent != null) {
+			removeFragmentChild(parent);
+			parent.setChild(newPage);
+		}
+		mFragAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * 删除一个Fragment，用于当前Webview加载新url时需删除原来的子webview
+	 * 
+	 * @param nFragment
+	 */
+	public void removeFragmentChild(NFragment nFragment) {
+		if (nFragment instanceof FragBaseWebviewPage) {
+			FragBaseWebviewPage basePage = (FragBaseWebviewPage) nFragment;
+			if (basePage.hasChild()) {
+				basePage.stopChildWebview();
+				basePage.removeChild(mFrags);
+				mFragAdapter.notifyDataSetChanged();
+			}
+		}
 	}
 
 	/**
