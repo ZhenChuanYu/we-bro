@@ -156,7 +156,7 @@ public class NWebview extends WebView {
 	 */
 	public interface UrlStatusObserver {
 
-		void onInitNWebview(NWebview webview);
+		void onInitNWebview(boolean[] status, NWebview webview);
 
 		void onUrlStatusChanged(boolean[] status, NWebview webview);
 
@@ -195,7 +195,7 @@ public class NWebview extends WebView {
 	private void notifyWebviewInited() {
 		WebView current = WebViewManager.instance().currentWebview();
 		if (current != null && current.equals(this) && mObserver != null) {
-			mObserver.onInitNWebview(this);
+			mObserver.onInitNWebview(status, this);
 		}
 	}
 

@@ -126,7 +126,7 @@ public class WebViewManager {
 	 * 
 	 * @return
 	 */
-	public WebView currentWebview() {
+	public NWebview currentWebview() {
 		NFragment curr = (NFragment) mFragAdapter.getItem(mViewPager
 				.getCurrentItem());
 		if (curr instanceof FragBaseWebviewPage) {
@@ -142,7 +142,7 @@ public class WebViewManager {
 	 * @param index
 	 * @return
 	 */
-	public WebView getWebview(int index) {
+	public NWebview getWebview(int index) {
 		return ((NFragment) mFragAdapter.getItem(index)).getWebview();
 	}
 

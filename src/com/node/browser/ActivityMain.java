@@ -46,6 +46,7 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -55,6 +56,8 @@ import android.widget.TextView;
 
 public class ActivityMain extends FragmentActivity {
 
+	private static final String TAG_DEBUG="NodeBrowser-ActivityMain";
+	
 	LinearLayout mLLHistoryArea;
 	ListView mLVHistory;
 	ViewPager mViewPager;
@@ -79,6 +82,17 @@ public class ActivityMain extends FragmentActivity {
 
 	EditText mETSearchInput;// search地址输入框
 	LinearLayout mSearchContainer;// search地址容器
+
+	/**
+	 * 下部操作区域的所有按钮
+	 */
+	Button
+	/* 回退 */mBtnGoback,
+	/* 前进 */mBtnGoForward,
+	/* reload or stop load */mBtnStopOrRefresh;
+
+	private final String TAG_STOP = "top";// 停止标签
+	private final String TAG_REFRESH = "refresh";
 
 	final long DEFAULT_ANIM_DURATION = 150l;
 	final long DEFAULT_ANIM_DURATION_HISTORY_SHOW = 500l;// 显示历史记录时的动画时间
@@ -151,13 +165,15 @@ public class ActivityMain extends FragmentActivity {
 		WebViewManager.instance().loadingUrlInNewWindow("http://www.baidu.com",
 				null, new NWebview.UrlStatusObserver() {
 					@Override
-					public void onInitNWebview(NWebview webview) {
-						
+					public void onInitNWebview(boolean[] status,
+							NWebview webview) {
+						updateBottomBtnOperation(status);
 					}
-					
+
 					@Override
-					public void onUrlStatusChanged(boolean[] status,NWebview webview) {
-						
+					public void onUrlStatusChanged(boolean[] status,
+							NWebview webview) {
+						updateBottomBtnOperation(status);
 					}
 				});
 	}
@@ -171,6 +187,48 @@ public class ActivityMain extends FragmentActivity {
 		secondPage = new FragSecondPage();
 		mFrags.add(firstPage);
 		mFrags.add(secondPage);
+	}
+
+	/**
+	 * 初始化底部可操作区域
+	 */
+	private void initBottomBtnOperation() {
+		mBtnGoback.setEnabled(false);
+		mBtnGoForward.setEnabled(false);
+		mBtnStopOrRefresh.setEnabled(false);
+		mBtnStopOrRefresh.setText("刷新");
+	}
+
+	/**
+	 * 刷新底部可操作区域的状态
+	 * 
+	 * @param status
+	 */
+	private void updateBottomBtnOperation(boolean[] status) {
+		if (status == null) {
+			mBtnGoback.setEnabled(false);
+			mBtnGoForward.setEnabled(false);
+			mBtnStopOrRefresh.setEnabled(true);
+			mBtnStopOrRefresh.setText("停止");
+			mBtnStopOrRefresh.setTag(TAG_STOP);
+		} else {
+			mBtnGoback.setEnabled(status[NWebview.INDEX_CAN_GO_BACK]);
+			mBtnGoForward.setEnabled(status[NWebview.INDEX_CAN_GO_FORWARD]);
+			mBtnStopOrRefresh.setEnabled(true);
+			String tag = "";
+			String btnText = "";
+			boolean isWaiting = status[NWebview.INDEX_URL_WAITINGFOR_LOAD];
+			boolean isLoading = status[NWebview.INDEX_URL_IS_LOADING];
+			if (isWaiting || isLoading) {
+				tag = TAG_STOP;
+				btnText = "停止";
+			} else {
+				tag = TAG_REFRESH;
+				btnText = "刷新";
+			}
+			mBtnStopOrRefresh.setTag(tag);
+			mBtnStopOrRefresh.setText(btnText);
+		}
 	}
 
 	private void initAction() {
@@ -201,7 +259,15 @@ public class ActivityMain extends FragmentActivity {
 				.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 					@Override
 					public void onPageSelected(int index) {
-
+						NWebview webview = WebViewManager.instance()
+								.getWebview(index);
+						if(webview==null){
+							NLog.e(TAG_DEBUG, "webview is null onPageSelected ,index is "+index);
+							initBottomBtnOperation();
+						}else{
+							boolean[] urlStatus=webview.status;
+							updateBottomBtnOperation(urlStatus);
+						}
 					}
 
 					@Override
@@ -214,7 +280,46 @@ public class ActivityMain extends FragmentActivity {
 
 					}
 				});
+		initBottomBtnOperationActions();
+	}
 
+	/**
+	 * 设置底部操作区域事件
+	 */
+	private void initBottomBtnOperationActions() {
+		View.OnClickListener bottomListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int view_id = v.getId();
+				NWebview nWebview = WebViewManager.instance().currentWebview();
+				switch (view_id) {
+				/* 回退 */
+				case R.id.bottom_op_goback:
+					nWebview.goBack();
+					break;
+				/* 前进 */
+				case R.id.bottom_op_goforward:
+					nWebview.goForward();
+					break;
+				/* 刷新|停止 */
+				case R.id.bottom_op_fresh_or_stop:
+					String tag = (String) v.getTag();
+					if (tag.equals(TAG_STOP)) {
+						nWebview.stopLoading();
+					} else if (tag.equals(TAG_REFRESH)) {
+						nWebview.reload();
+					} else {
+						// do nothing
+						// can not happen
+					}
+
+					break;
+				}
+			}
+		};
+		mBtnGoback.setOnClickListener(bottomListener);
+		mBtnGoForward.setOnClickListener(bottomListener);
+		mBtnStopOrRefresh.setOnClickListener(bottomListener);
 	}
 
 	TextView.OnEditorActionListener mUrlSearchInputActionListener = new TextView.OnEditorActionListener() {
@@ -234,10 +339,6 @@ public class ActivityMain extends FragmentActivity {
 			return true;
 		}
 	};
-
-	protected void updateBottomOperationArea(WebView webview) {
-		
-	}
 
 	protected void updateUrlArea(WebView webview) {
 
@@ -540,6 +641,11 @@ public class ActivityMain extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager_content_view_container);
 		mContentContainer = (FrameLayout) findViewById(R.id.content_container);
 
+		/* 下部可操作按钮 */
+		mBtnGoback = (Button) findViewById(R.id.bottom_op_goback);
+		mBtnGoForward = (Button) findViewById(R.id.bottom_op_goforward);
+		mBtnStopOrRefresh = (Button) findViewById(R.id.bottom_op_fresh_or_stop);
+		initBottomBtnOperation();
 	}
 
 	@Override

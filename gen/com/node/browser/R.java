@@ -65,7 +65,7 @@ public final class R {
         public static final int bottom_op_book_mark=0x7f09001d;
         public static final int bottom_op_current_history=0x7f09001c;
         public static final int bottom_op_download_manager=0x7f09001e;
-        public static final int bottom_op_fresh=0x7f09001b;
+        public static final int bottom_op_fresh_or_stop=0x7f09001b;
         public static final int bottom_op_goback=0x7f090019;
         public static final int bottom_op_goforward=0x7f09001a;
         public static final int bottom_op_more=0x7f090020;
