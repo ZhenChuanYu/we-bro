@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.node.browser.R;
 import com.node.browser.webviewmanager.NWebview;
+import com.node.browser.webviewmanager.NWebview.UrlStatusObserver;
 import com.node.browser.webviewmanager.WebViewManager;
 import com.node.log.NLog;
 
@@ -23,6 +24,8 @@ import android.widget.LinearLayout;
 public class FragBaseWebviewPage extends NFragment {
 	private final static String TAG = FragBaseWebviewPage.class.getName();
 
+	private NWebview.UrlStatusObserver mUrlStatusObserver;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,8 +43,10 @@ public class FragBaseWebviewPage extends NFragment {
 		webView = (NWebview) view.findViewById(R.id.webview);
 		mWebviewContainer = (LinearLayout) view
 				.findViewById(R.id.webview_container);
+		
 		initWebview(webView);
-
+		webView.setUrlStatusObserver(mUrlStatusObserver);
+		
 		if (invoker != null) {
 			invoker.loadWithMessage(webView);
 			invoker.loadWithUrl(webView);
@@ -49,13 +54,14 @@ public class FragBaseWebviewPage extends NFragment {
 		super.onViewCreated(view, savedInstanceState);
 	}
 
-	private void initWebview(NWebview webView) {
+	private void initWebview(final NWebview webView) {
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (url.startsWith("newwindow:")) {
 					WebViewManager.instance().loadingUrlInNewWindow(
-							url.substring(10), FragBaseWebviewPage.this);
+							url.substring(10), FragBaseWebviewPage.this,
+							mUrlStatusObserver);
 				} else {
 					view.loadUrl(url); // load url in current WebView
 				}
@@ -64,12 +70,14 @@ public class FragBaseWebviewPage extends NFragment {
 
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				webView.updateUrlStatus(true, false);
 				super.onPageStarted(view, url, favicon);
 			}
 
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				view.loadUrl("javascript: var allLinks = document.getElementsByTagName('a'); if (allLinks) {var i;for (i=0; i<allLinks.length; i++) {var link = allLinks[i];var target = link.getAttribute('target'); if (target && target == '_blank') {link.setAttribute('target','_self');link.href = 'newwindow:'+link.href;}}}");
+				webView.updateUrlStatus(false, false);
 			}
 		});
 
@@ -116,6 +124,7 @@ public class FragBaseWebviewPage extends NFragment {
 	/**
 	 * 停止子节点的Webview
 	 */
+	@Deprecated
 	public void stopChildWebview() {
 		if (child == null) {
 			return;
@@ -141,6 +150,7 @@ public class FragBaseWebviewPage extends NFragment {
 	/**
 	 * 移除子节点
 	 */
+	@Deprecated
 	public void removeChild(ArrayList<NFragment> dataSouce) {
 		if (this.child == null) {
 			return;
@@ -149,16 +159,19 @@ public class FragBaseWebviewPage extends NFragment {
 			Iterator<NFragment> it = dataSouce.iterator();
 			while (it.hasNext()) {
 				NFragment nFrag = it.next();
-				if (nFrag.UUID.equals(this.child.UUID)) {
-					NLog.i(TAG, "NFragment: UUID is " + this.child.UUID
+				if (nFrag.equals(this.child)) {
+					NLog.i(TAG, "NFragment: UUID is " + this.child.hashCode()
 							+ " removed");
-					nFrag.deleteUUID();
 					it.remove();
 					this.child = null;
 					break;
 				}
 			}
 		}
+	}
+
+	public void setUrlStatusObserver(UrlStatusObserver observer) {
+		mUrlStatusObserver = observer;
 	}
 
 }

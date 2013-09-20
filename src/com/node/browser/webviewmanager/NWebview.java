@@ -31,9 +31,10 @@ public class NWebview extends WebView {
 	private void initWebview() {
 		// 增加JS本地调用接口
 		addJavascriptInterfaces();
+		// 初始化设置
 		initSettings();
-		// setWebViewClient();
-		// setWebChromeClient();
+		// 通知观察者
+		notifyWebviewInited();
 	}
 
 	@SuppressLint("NewApi")
@@ -45,7 +46,7 @@ public class NWebview extends WebView {
 		settings.setDomStorageEnabled(true);
 		settings.setDisplayZoomControls(true);
 		settings.setUseWideViewPort(true);
-		if(android.os.Build.VERSION.SDK_INT>=16){
+		if (android.os.Build.VERSION.SDK_INT >= 16) {
 			settings.setAllowUniversalAccessFromFileURLs(true);
 			settings.setAllowFileAccessFromFileURLs(true);
 		}
@@ -112,6 +113,13 @@ public class NWebview extends WebView {
 		return super.zoomOut();
 	}
 
+	@Override
+	public void reload() {
+		super.reload();
+		// 更新状态 isLoading为false，isWaiting为true
+		updateUrlStatus(false, true);
+	}
+
 	/**
 	 * 更新下当前content的实际宽度 实际宽度=原始宽度*缩放比率
 	 */
@@ -120,5 +128,102 @@ public class NWebview extends WebView {
 		contentHeight = (int) (contentSrcHeight * scale);
 		maxRight = contentWidth - GlobalUtil.getDevPixWidth(getContext());
 		maxBottom = contentHeight - getHeight();
+	}
+
+	/*
+	 * webview状态管理 通过status[INDEX_CAN_GO_BACK]获取是否可以回退的状态
+	 * 通过status[INDEX_CAN_GO_FORWARD]获取是否可以前进的状态
+	 * 通过status[INDEX_URL_IS_LOADING]获取是否有url正在加载
+	 */
+	public boolean[] status = new boolean[4];
+	public static final int INDEX_CAN_GO_BACK = 0;
+	public static final int INDEX_CAN_GO_FORWARD = 1;
+	public static final int INDEX_URL_IS_LOADING = 2;
+	public static final int INDEX_URL_WAITINGFOR_LOAD = 3;
+
+	{
+		status[INDEX_CAN_GO_BACK] = false;
+		status[INDEX_CAN_GO_FORWARD] = false;
+		status[INDEX_URL_IS_LOADING] = false;
+		status[INDEX_URL_WAITINGFOR_LOAD] = true;
+	}
+
+	/**
+	 * url状态观察者接口
+	 * 
+	 * @author zhenchuan
+	 * 
+	 */
+	public interface UrlStatusObserver {
+
+		void onInitNWebview(NWebview webview);
+
+		void onUrlStatusChanged(boolean[] status, NWebview webview);
+
+	}
+
+	/**
+	 * webview的前进、后退、加载中状态发生变化的观察者
+	 */
+	private UrlStatusObserver mObserver;
+
+	/**
+	 * 设置状态变化的观察者
+	 * 
+	 * @param observer
+	 */
+	public void setUrlStatusObserver(UrlStatusObserver observer) {
+		mObserver = observer;
+	}
+
+	/**
+	 * 通知观察者，此时状态已经发生变化<br>
+	 * 
+	 * @see #updateUrlStatus(boolean)<br>
+	 * @see #updateUrlStatus(boolean, boolean, boolean)<br>
+	 */
+	private void notifyObserverStatusChanged() {
+		WebView current = WebViewManager.instance().currentWebview();
+		if (current != null && current.equals(this) && mObserver != null) {
+			mObserver.onUrlStatusChanged(status, this);
+		}
+	}
+
+	/**
+	 * 通知观察者，webview已初始化完成
+	 */
+	private void notifyWebviewInited() {
+		WebView current = WebViewManager.instance().currentWebview();
+		if (current != null && current.equals(this) && mObserver != null) {
+			mObserver.onInitNWebview(this);
+		}
+	}
+
+	/**
+	 * 更新状态信息
+	 * 
+	 * @param canGoBack
+	 * @param canGoForward
+	 * @param isLoading
+	 * @param isWaiting
+	 */
+	public void updateUrlStatus(boolean canGoBack, boolean canGoForward,
+			boolean isLoading, boolean isWaiting) {
+		status[INDEX_CAN_GO_BACK] = canGoBack;
+		status[INDEX_CAN_GO_FORWARD] = canGoForward;
+		status[INDEX_URL_IS_LOADING] = isLoading;
+		status[INDEX_URL_WAITINGFOR_LOAD] = isWaiting;
+		notifyObserverStatusChanged();
+	}
+
+	/**
+	 * 更新状态<br>
+	 * 通常使用此方法而非 {@link #updateUrlStatus(boolean)}
+	 * 
+	 * @param isLoading
+	 */
+	public void updateUrlStatus(boolean isLoading, boolean isWaiting) {
+		updateUrlStatus(this.canGoBack(), this.canGoForward(), isLoading,
+				isWaiting);
 	}
 }

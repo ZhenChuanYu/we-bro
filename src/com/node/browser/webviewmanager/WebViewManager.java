@@ -3,12 +3,14 @@ package com.node.browser.webviewmanager;
 import java.util.ArrayList;
 
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.webkit.WebView;
 
 import com.node.browser.ActivityMain.FragAdapter;
 import com.node.browser.fragment.FragBaseWebviewPage;
 import com.node.browser.fragment.NFragment;
+import com.node.browser.webviewmanager.NWebview.UrlStatusObserver;
 
 /**
  * 管理增删改webview的组件
@@ -77,7 +79,7 @@ public class WebViewManager {
 	 * @param url
 	 */
 	public void loadingUrlInNewWindow(final String url,
-			FragBaseWebviewPage parent) {
+			FragBaseWebviewPage parent, UrlStatusObserver urlStatusObserver) {
 		FragBaseWebviewPage newPage = new FragBaseWebviewPage();
 		newPage.setInvokerAfterInit(new NFragment.InvokerAfterInit() {
 			@Override
@@ -90,15 +92,15 @@ public class WebViewManager {
 				// do nothing
 			}
 		});
+		newPage.setUrlStatusObserver(urlStatusObserver);
 		mFrags.add(newPage);
 		mFragAdapter.notifyDataSetChanged();
 		mViewPager.setCurrentItem(mFrags.size() - 1, false);
-		
-		if (parent != null) {
-			removeFragmentChild(parent);
-			parent.setChild(newPage);
-		}
-		mFragAdapter.notifyDataSetChanged();
+		// if (parent != null) {
+		// removeFragmentChild(parent);
+		// parent.setChild(newPage);
+		// }
+		// mFragAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -106,6 +108,8 @@ public class WebViewManager {
 	 * 
 	 * @param nFragment
 	 */
+
+	@Deprecated
 	public void removeFragmentChild(NFragment nFragment) {
 		if (nFragment instanceof FragBaseWebviewPage) {
 			FragBaseWebviewPage basePage = (FragBaseWebviewPage) nFragment;
@@ -115,6 +119,31 @@ public class WebViewManager {
 				mFragAdapter.notifyDataSetChanged();
 			}
 		}
+	}
+
+	/**
+	 * 获得当前webview
+	 * 
+	 * @return
+	 */
+	public WebView currentWebview() {
+		NFragment curr = (NFragment) mFragAdapter.getItem(mViewPager
+				.getCurrentItem());
+		if (curr instanceof FragBaseWebviewPage) {
+			return curr.getWebview();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 根据index获得webview
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public WebView getWebview(int index) {
+		return ((NFragment) mFragAdapter.getItem(index)).getWebview();
 	}
 
 	/**

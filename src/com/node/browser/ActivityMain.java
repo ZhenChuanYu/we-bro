@@ -9,6 +9,7 @@ import com.node.browser.activity.dialogs.DialogUtil;
 import com.node.browser.fragment.FragFirstPage;
 import com.node.browser.fragment.FragSecondPage;
 import com.node.browser.fragment.NFragment;
+import com.node.browser.webviewmanager.NWebview;
 import com.node.browser.webviewmanager.WebViewManager;
 import com.node.log.NLog;
 import com.node.util.GlobalUtil;
@@ -44,6 +45,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -147,7 +149,17 @@ public class ActivityMain extends FragmentActivity {
 		WebViewManager.instance().initFields(mAdapter, mFrags, mViewPager);
 		// test
 		WebViewManager.instance().loadingUrlInNewWindow("http://www.baidu.com",
-				null);
+				null, new NWebview.UrlStatusObserver() {
+					@Override
+					public void onInitNWebview(NWebview webview) {
+						
+					}
+					
+					@Override
+					public void onUrlStatusChanged(boolean[] status,NWebview webview) {
+						
+					}
+				});
 	}
 
 	NFragment firstPage;// 首页
@@ -162,6 +174,7 @@ public class ActivityMain extends FragmentActivity {
 	}
 
 	private void initAction() {
+		// EditText url输入框
 		mETUrlInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -170,6 +183,7 @@ public class ActivityMain extends FragmentActivity {
 				}
 			}
 		});
+		// EditText search输入框
 		mETSearchInput
 				.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 					@Override
@@ -178,11 +192,29 @@ public class ActivityMain extends FragmentActivity {
 							showSearchItems();
 						}
 					}
-
 				});
 		// 软件盘事件
 		mETUrlInput.setOnEditorActionListener(mUrlSearchInputActionListener);
 		mETSearchInput.setOnEditorActionListener(mUrlSearchInputActionListener);
+
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+					@Override
+					public void onPageSelected(int index) {
+
+					}
+
+					@Override
+					public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+					}
+
+					@Override
+					public void onPageScrollStateChanged(int arg0) {
+
+					}
+				});
+
 	}
 
 	TextView.OnEditorActionListener mUrlSearchInputActionListener = new TextView.OnEditorActionListener() {
@@ -202,6 +234,14 @@ public class ActivityMain extends FragmentActivity {
 			return true;
 		}
 	};
+
+	protected void updateBottomOperationArea(WebView webview) {
+		
+	}
+
+	protected void updateUrlArea(WebView webview) {
+
+	}
 
 	/*
 	 * url和search相关的页面载入
@@ -586,21 +626,19 @@ public class ActivityMain extends FragmentActivity {
 
 		@Override
 		public int getItemPosition(Object object) {
-//			NLog.e("adapter", "getItemPosition is in");
-//			if (object instanceof NFragment) {
-//				NFragment nFrag = (NFragment) object;
-//				if (nFrag.isNewUUID(true)) {
-//					NLog.e("adapter", "position none" + "UUID is " + nFrag.UUID);
-//					return PagerAdapter.POSITION_NONE;
-//				} else {
-//					NLog.e("adapter", "position unchanged" + "UUID is "
-//							+ nFrag.UUID);
-//					return PagerAdapter.POSITION_UNCHANGED;
-//				}
-//			}
+			// for (Fragment frag : mFrags) {
+			// if (object.equals(frag)) {
+			// return PagerAdapter.POSITION_UNCHANGED;
+			// }
+			// }
+			// return PagerAdapter.POSITION_NONE;
 			return super.getItemPosition(object);
 		}
 	}
+
+	/**
+	 * 刷新
+	 */
 
 	/*
 	 * 状态管理

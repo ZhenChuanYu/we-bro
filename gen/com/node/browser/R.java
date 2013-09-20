@@ -61,13 +61,15 @@ public final class R {
         public static final int temp_node_logo=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f090020;
-        public static final int bottom_op_book_mark=0x7f09001b;
-        public static final int bottom_op_current_history=0x7f09001a;
-        public static final int bottom_op_download_manager=0x7f09001c;
-        public static final int bottom_op_fresh=0x7f090019;
-        public static final int bottom_op_more=0x7f09001e;
-        public static final int bottom_op_setting=0x7f09001d;
+        public static final int action_settings=0x7f090022;
+        public static final int bottom_op_book_mark=0x7f09001d;
+        public static final int bottom_op_current_history=0x7f09001c;
+        public static final int bottom_op_download_manager=0x7f09001e;
+        public static final int bottom_op_fresh=0x7f09001b;
+        public static final int bottom_op_goback=0x7f090019;
+        public static final int bottom_op_goforward=0x7f09001a;
+        public static final int bottom_op_more=0x7f090020;
+        public static final int bottom_op_setting=0x7f09001f;
         public static final int content_container=0x7f090014;
         public static final int dialog_btn_cancel=0x7f090006;
         public static final int dialog_btn_ensure=0x7f090005;
@@ -81,7 +83,7 @@ public final class R {
         public static final int header_url_container_father=0x7f09000d;
         public static final int header_url_input_container=0x7f09000e;
         public static final int listview_history=0x7f090018;
-        public static final int node_webview=0x7f09001f;
+        public static final int node_webview=0x7f090021;
         public static final int s_bottom=0x7f090015;
         public static final int search_content=0x7f090013;
         public static final int splash_dialog_bg_area=0x7f090007;

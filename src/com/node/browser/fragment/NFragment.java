@@ -20,12 +20,9 @@ public class NFragment extends Fragment {
 
 	protected InvokerAfterInit invoker;// 初始化webview之后的回调
 
-	public String UUID;// 唯一标示
-
 	public NFragment() {
 		super();
-		UUID = String.valueOf(this.hashCode());
-		NLog.e("zhenchuan", "the new NFragment UUID is " + UUID);
+		NLog.e("zhenchuan", "the new NFragment UUID is " + hashCode());
 	}
 
 	public NWebview getWebview() {
@@ -47,73 +44,4 @@ public class NFragment extends Fragment {
 
 		void loadWithMessage(WebView webview);
 	}
-
-	/**
-	 * 判断是否为新UUID
-	 * 
-	 * @param addUUID
-	 * @return
-	 */
-	public boolean isNewUUID(boolean addUUID) {
-		boolean has = hasUUID(UUID);
-		if (addUUID && !has) {
-			addUUID(UUID);
-		}
-		return !has;
-	}
-
-	/**
-	 * 从UUID组中删除UUID
-	 */
-	public void deleteUUID() {
-		deleteUUID(UUID);
-	}
-
-	/**
-	 * UUID管理
-	 */
-	private static List<String> uuids = new ArrayList<String>(50);
-
-	/**
-	 * 删除一个UUID
-	 * 
-	 * @param uuid
-	 */
-	public static synchronized void deleteUUID(String uuid) {
-		Iterator<String> it = uuids.iterator();
-		while (it.hasNext()) {
-			String temp = it.next();
-			if (temp.equals(uuid)) {
-				it.remove();
-				break;
-			}
-		}
-	}
-
-	/**
-	 * 判断是否含有UUID
-	 * 
-	 * @param uuid
-	 * @return
-	 */
-	public static synchronized boolean hasUUID(String uuid) {
-		boolean has = false;
-		for (String id : uuids) {
-			if (id.equals(uuid)) {
-				has = true;
-				break;
-			}
-		}
-		return has;
-	}
-
-	/**
-	 * 增加加一个UUID
-	 * 
-	 * @param uuid
-	 */
-	public static synchronized void addUUID(String uuid) {
-		uuids.add(uuid);
-	}
-
 }
