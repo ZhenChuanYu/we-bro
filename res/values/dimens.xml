@@ -25,5 +25,7 @@
     <dimen name="dialog_checkbox_textsize">12sp</dimen>
     <!-- 对话框checkbox字颜色 -->
     <color name="dialog_checkbox_textcolor">#67a092</color>
+    <!-- 顶部url输入框高度 -->
+    <dimen name="header_url_inputarea_height">40dip</dimen>
 
 </resources>

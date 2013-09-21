@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/webview_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#fafafa"
-    android:orientation="vertical" 
-    android:id="@+id/webview_container"
-    >
+    android:orientation="vertical" >
 
     <com.node.browser.webviewmanager.NWebview
         android:id="@+id/webview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layerType="software" >
+
+        <LinearLayout
+            android:id="@+id/header_line"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/header_url_inputarea_height"
+            android:orientation="vertical" 
+            android:background="#600000"
+            >
+        </LinearLayout>
     </com.node.browser.webviewmanager.NWebview>
 
 </LinearLayout>

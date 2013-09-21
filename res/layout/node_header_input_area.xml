@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="40dip"
-    android:background="#ffffff"
-    android:orientation="vertical" 
     android:id="@+id/header_area"
-    >
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/header_url_inputarea_height"
+    android:background="#ffffff"
+    android:orientation="vertical" >
 
     <!-- url 地址层 -->
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
         android:id="@+id/header_url_container_father"
-        >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
         <!-- 获取焦点 -->
 
@@ -28,10 +26,9 @@
             android:id="@+id/header_url_input_container"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/unused_location_search_area" 
             android:layout_alignParentLeft="true"
-            >
-			
+            android:layout_toLeftOf="@+id/unused_location_search_area" >
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="30dip"
@@ -39,7 +36,7 @@
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="5dip"
                 android:background="@drawable/node_frame_url_input_area" >
-				
+
                 <ImageView
                     android:id="@+id/url_indicator"
                     android:layout_width="30dip"
@@ -59,11 +56,11 @@
                     android:background="@null"
                     android:cursorVisible="true"
                     android:hint="输入地址"
+                    android:imeActionId="100100"
+                    android:imeOptions="actionGo"
                     android:paddingLeft="3dip"
                     android:singleLine="true"
                     android:textColor="#ffffff"
-                    android:imeOptions="actionGo"
-                    android:imeActionId="100100"
                     android:textSize="12sp" />
             </RelativeLayout>
         </LinearLayout>
@@ -82,9 +79,10 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-        >
-		<!-- 获取焦点 -->
+        android:layout_height="fill_parent" >
+
+        <!-- 获取焦点 -->
+
         <LinearLayout
             android:layout_width="0dip"
             android:layout_height="0dip"
@@ -96,18 +94,16 @@
             android:id="@+id/header_search_input_area"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_alignParentRight="true" 
-            android:minWidth="120dip"
-            >
+            android:layout_alignParentRight="true"
+            android:minWidth="120dip" >
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="30dip"
-                android:layout_marginTop="5dip"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
-                android:background="@drawable/node_frame_search_input_area"
-                >
+                android:layout_marginTop="5dip"
+                android:background="@drawable/node_frame_search_input_area" >
 
                 <EditText
                     android:id="@+id/search_content"

@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import com.node.browser.ActivityMain.FragAdapter;
 import com.node.browser.fragment.FragBaseWebviewPage;
 import com.node.browser.fragment.NFragment;
+import com.node.browser.webviewmanager.NWebview.UrlAreaHidenOrShowDelegate;
 import com.node.browser.webviewmanager.NWebview.UrlStatusObserver;
 
 /**
@@ -79,7 +80,7 @@ public class WebViewManager {
 	 * @param url
 	 */
 	public void loadingUrlInNewWindow(final String url,
-			FragBaseWebviewPage parent, UrlStatusObserver urlStatusObserver) {
+			FragBaseWebviewPage parent, UrlStatusObserver urlStatusObserver,UrlAreaHidenOrShowDelegate urlHidenShowDelegate) {
 		FragBaseWebviewPage newPage = new FragBaseWebviewPage();
 		newPage.setInvokerAfterInit(new NFragment.InvokerAfterInit() {
 			@Override
@@ -93,6 +94,7 @@ public class WebViewManager {
 			}
 		});
 		newPage.setUrlStatusObserver(urlStatusObserver);
+		newPage.setUrlAreaHidenOrShowDelegate(urlHidenShowDelegate);
 		mFrags.add(newPage);
 		mFragAdapter.notifyDataSetChanged();
 		mViewPager.setCurrentItem(mFrags.size() - 1, false);

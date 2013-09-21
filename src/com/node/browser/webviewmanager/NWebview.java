@@ -5,18 +5,15 @@ import com.node.util.GlobalUtil;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebSettings.PluginState;
 
 public class NWebview extends WebView {
-
-	int contentSrcWidth;
-	int contentWidth;
-	int contentSrcHeight;
-	int contentHeight;
 
 	public NWebview(Context context) {
 		super(context);
@@ -62,13 +59,65 @@ public class NWebview extends WebView {
 		// addJavascriptInterface(new JavaScriptInterface(), "GETWIDTH");
 	}
 
-	/*
-	 * protected void getContentWidthThrowJS() { loadUrl(
-	 * "javascript:window.GETWIDTH.getContentWidth(document.getElementsByTagName('html')[0].scrollWidth);"
-	 * ); }
+	private int titleHeight;
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		// determine height of title bar
+		View title = getChildAt(0);
+		titleHeight = title == null ? 0 : title.getMeasuredHeight();
+	}
+
+	private boolean touchInTitleBar;
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent me) {
+
+		boolean wasInTitle = false;
+		switch (me.getActionMasked()) {
+		case MotionEvent.ACTION_DOWN:
+			touchInTitleBar = (me.getY() <= visibleTitleHeight());
+			break;
+
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_CANCEL:
+			wasInTitle = touchInTitleBar;
+			touchInTitleBar = false;
+			break;
+		}
+		if (touchInTitleBar || wasInTitle) {
+			View title = getChildAt(0);
+			if (title != null) {
+				// this touch belongs to title bar, dispatch it here
+				me.offsetLocation(0, getScrollY());
+				return false;
+			}
+		}
+		// this is our touch, offset and process
+		me.offsetLocation(0, -titleHeight);
+		return super.dispatchTouchEvent(me);
+	}
+
+	/**
+	 * @return visible height of title (may return negative values)
 	 */
-	protected void getContentHeightThrowNative() {
-		contentSrcHeight = getContentHeight();
+	private int visibleTitleHeight() {
+		return titleHeight - getScrollY();
+	}
+
+	@Override
+	protected void onDraw(Canvas c) {
+		c.save();
+		int tH = visibleTitleHeight();
+		if (tH > 0) {
+			// clip so that it doesn't clear background under title bar
+			int sx = getScrollX(), sy = getScrollY();
+			c.clipRect(sx, sy + tH, sx + getWidth(), sy + getHeight());
+		}
+		c.translate(0, titleHeight);
+		super.onDraw(c);
+		c.restore();
 	}
 
 	/*
@@ -82,19 +131,70 @@ public class NWebview extends WebView {
 	 * updateContentWidthHeight(getScale()); } }); } } }
 	 */
 
-	float maxRight = 0f;
-	float maxBottom = 0f;
-	float headerHeight = 0f;
-
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
 		super.onScrollChanged(l, t, oldl, oldt);
+
+		View title = getChildAt(0);
+		if (title != null) // undo horizontal scroll, so that title scrolls only
+							// vertically
+			title.offsetLeftAndRight(l - title.getLeft());
 		boolean needUpdateBound = false;
 		if (l <= 0) {
 			setScrollX(0);
 		}
 		if (t <= 0) {
 			setScrollY(0);
+		}
+		/* 此处判断显示或隐藏顶部Url输入框 */
+		hidenOrShowHeaderUrlArea(l, t, oldl, oldt);
+	}
+
+	/**
+	 * 判断是否显示或隐藏顶部的组件
+	 * 
+	 * @see method {@link NWebview#hidenOrShowHeaderUrlArea(int, int, int, int)}<br>
+	 *      used in lifestyle method
+	 *      {@link #onScrollChanged(int, int, int, int)}<br>
+	 */
+	private long lastMillis = 0;
+	private int lastTop = 0;
+	private int headerHeight = (int) GlobalUtil.dip2px(getContext(), 40) + 1;
+
+	private void hidenOrShowHeaderUrlArea(int l, int t, int oldl, int oldt) {
+		long currentMillis = System.currentTimeMillis();
+		int currentTop = t;
+		if (lastMillis == 0 || currentMillis - lastMillis >= 2 * 1000) {
+			lastMillis = currentMillis;
+		}
+		if (lastTop == 0) {
+			lastTop = currentTop;
+		}
+
+		boolean timePermiss = currentMillis - lastMillis >= 300;// 时间允许，间隔超过200毫秒
+		boolean isUp = t - oldt > 0;// 判断用户是否意图向上滑动
+		boolean lengthPermiss = currentTop - lastTop > headerHeight;// 上滑的距离允许
+
+		// 显示Url区域
+		if (!isUp && timePermiss && urlAreaHidenOrShowDeletegate != null) {
+			// 确保webview与顶部Url输入框的一对一关系
+			NWebview webview = WebViewManager.instance().currentWebview();
+			if (webview.equals(this)) {
+				urlAreaHidenOrShowDeletegate.onShowUrlArea();
+			}
+			lastMillis = currentMillis;
+			lastTop = currentTop;
+		}
+		// 隐藏url区域
+		if (isUp && timePermiss && lengthPermiss
+				&& urlAreaHidenOrShowDeletegate != null) {
+			// 确保webview与顶部Url输入框的一对一关系
+			NWebview webview = WebViewManager.instance().currentWebview();
+			if (webview.equals(this)) {
+				urlAreaHidenOrShowDeletegate.onHidenUrlArea();
+			}
+			lastMillis = currentMillis;
+			lastTop = currentTop;
 		}
 	}
 
@@ -120,14 +220,21 @@ public class NWebview extends WebView {
 		updateUrlStatus(false, true);
 	}
 
-	/**
-	 * 更新下当前content的实际宽度 实际宽度=原始宽度*缩放比率
+	/*
+	 * webview通知 显示或隐藏Url输入区域接口
 	 */
-	private void updateContentWidthHeight(float scale) {
-		contentWidth = (int) (contentSrcWidth * scale);
-		contentHeight = (int) (contentSrcHeight * scale);
-		maxRight = contentWidth - GlobalUtil.getDevPixWidth(getContext());
-		maxBottom = contentHeight - getHeight();
+	public interface UrlAreaHidenOrShowDelegate {
+
+		void onHidenUrlArea();
+
+		void onShowUrlArea();
+	}
+
+	private UrlAreaHidenOrShowDelegate urlAreaHidenOrShowDeletegate;
+
+	public void setUrlAreaHidenOrShowDelegate(
+			UrlAreaHidenOrShowDelegate areaHidenOrShowDelegate) {
+		this.urlAreaHidenOrShowDeletegate = areaHidenOrShowDelegate;
 	}
 
 	/*

@@ -12,12 +12,15 @@
         android:layout_alignParentTop="true"
         android:background="#000000" >
 
+        <!-- 第一层 -->
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_content_view_container"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#ffffff"
             android:cacheColorHint="#00000000" />
+        <!-- 第二层 -->
 
         <LinearLayout
             android:id="@+id/url_history_area"
@@ -34,6 +37,9 @@
                 android:cacheColorHint="#00ffffff" >
             </ListView>
         </LinearLayout>
+        <!-- 第三层 -->
+
+        <include layout="@layout/node_header_input_area" />
     </FrameLayout>
 
     <!-- 下部控制区域 -->

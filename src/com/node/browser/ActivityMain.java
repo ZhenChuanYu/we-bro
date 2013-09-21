@@ -17,6 +17,8 @@ import com.node.util.PrefUtil;
 import com.node.util.UIUtil;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.animation.Animator;
@@ -42,6 +44,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
@@ -56,8 +59,8 @@ import android.widget.TextView;
 
 public class ActivityMain extends FragmentActivity {
 
-	private static final String TAG_DEBUG="NodeBrowser-ActivityMain";
-	
+	private static final String TAG_DEBUG = "NodeBrowser-ActivityMain";
+
 	LinearLayout mLLHistoryArea;
 	ListView mLVHistory;
 	ViewPager mViewPager;
@@ -90,14 +93,38 @@ public class ActivityMain extends FragmentActivity {
 	/* 回退 */mBtnGoback,
 	/* 前进 */mBtnGoForward,
 	/* reload or stop load */mBtnStopOrRefresh;
-
+	/**
+	 * 下部操作区域 停止/刷新button的TAG
+	 */
 	private final String TAG_STOP = "top";// 停止标签
-	private final String TAG_REFRESH = "refresh";
+	private final String TAG_REFRESH = "refresh";// 刷新标签
+
+	/**
+	 * 顶部Url输入区域 显示状态的TAG
+	 */
+	private final String TAG_SHOWN = "shown";
+	private final String TAG_SHOWING = "showing";
+	private final String TAG_HIDEN = "hiden";
+	private final String TAG_HIDING = "hiding";
 
 	final long DEFAULT_ANIM_DURATION = 150l;
 	final long DEFAULT_ANIM_DURATION_HISTORY_SHOW = 500l;// 显示历史记录时的动画时间
 	final long DEFAULT_ANIM_DURATION_HISTORY_HIDEN = 150l;// 隐藏历史记录时的动画时间
 	int mSearchAreaWidthSrc = 0;// 搜索框的原始大小
+
+	// test
+	int msg_show = 100;
+	int msg_hiden = 101;
+	Handler testHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			if (msg.what == msg_show) {
+				showHeaderArea();
+			}
+			if (msg.what == msg_hiden) {
+				hidenHeaderArea();
+			}
+		};
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +168,10 @@ public class ActivityMain extends FragmentActivity {
 						((ActivityECCheckBoxDialog) activity).dismiss();
 					}
 				});
+		testHandler.sendMessageDelayed(Message.obtain(testHandler, msg_hiden),
+				5000);
+		testHandler.sendMessageDelayed(Message.obtain(testHandler, msg_show),
+				8000);
 	}
 
 	@Override
@@ -174,6 +205,17 @@ public class ActivityMain extends FragmentActivity {
 					public void onUrlStatusChanged(boolean[] status,
 							NWebview webview) {
 						updateBottomBtnOperation(status);
+					}
+				}, new NWebview.UrlAreaHidenOrShowDelegate() {
+
+					@Override
+					public void onShowUrlArea() {
+						showHeaderArea();
+					}
+
+					@Override
+					public void onHidenUrlArea() {
+						hidenHeaderArea();
 					}
 				});
 	}
@@ -261,11 +303,13 @@ public class ActivityMain extends FragmentActivity {
 					public void onPageSelected(int index) {
 						NWebview webview = WebViewManager.instance()
 								.getWebview(index);
-						if(webview==null){
-							NLog.e(TAG_DEBUG, "webview is null onPageSelected ,index is "+index);
+						if (webview == null) {
+							NLog.e(TAG_DEBUG,
+									"webview is null onPageSelected ,index is "
+											+ index);
 							initBottomBtnOperation();
-						}else{
-							boolean[] urlStatus=webview.status;
+						} else {
+							boolean[] urlStatus = webview.status;
 							updateBottomBtnOperation(urlStatus);
 						}
 					}
@@ -624,6 +668,94 @@ public class ActivityMain extends FragmentActivity {
 		});
 		oa.setDuration(DEFAULT_ANIM_DURATION_HISTORY_HIDEN);
 		oa.start();
+	}
+
+	private float mHeaderHeight = 0; // 顶部Url区域高度
+	private final long DEFAULT_HEADER_SHOW_HIDEN_DURATION = 100; // 显示、隐藏头部区域的时间戳
+
+	/* 隐藏和显示顶部Url输入框 */
+	private void showHeaderArea() {
+		String tag = getHeaderAreaTag(TAG_SHOWN);
+		if (!tag.equals(TAG_HIDEN)) {
+			return;
+		}
+		float height = getHeaderHeight();
+		ObjectAnimator anim = ObjectAnimator.ofFloat(mHeaderArea, "y", -height,
+				0);
+		anim.addListener(new Animator.AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				setHeaderAreaTag(TAG_SHOWING);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				setHeaderAreaTag(TAG_SHOWN);
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+		});
+		anim.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
+		anim.setInterpolator(new AccelerateDecelerateInterpolator());
+		anim.start();
+	}
+
+	private void hidenHeaderArea() {
+		String tag = getHeaderAreaTag(TAG_SHOWN);
+		if (!tag.equals(TAG_SHOWN)) {
+			return;
+		}
+		float height = getHeaderHeight();
+		ObjectAnimator anim = ObjectAnimator.ofFloat(mHeaderArea, "y", 0,
+				-height);
+		anim.addListener(new Animator.AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				setHeaderAreaTag(TAG_HIDING);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				setHeaderAreaTag(TAG_HIDEN);
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+		});
+		anim.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
+		anim.setInterpolator(new AccelerateDecelerateInterpolator());
+		anim.start();
+	}
+
+	private String getHeaderAreaTag(String defTag) {
+		Object tag = mHeaderArea.getTag();
+		if (tag == null || !(tag instanceof String)) {
+			return defTag;
+		}
+		return (String) tag;
+	}
+
+	private void setHeaderAreaTag(String tag) {
+		mHeaderArea.setTag(tag);
+	}
+
+	private float getHeaderHeight() {
+		if (mHeaderHeight == 0) {
+			mHeaderHeight = getResources().getDimension(
+					R.dimen.header_url_inputarea_height);
+		}
+		return mHeaderHeight;
 	}
 
 	private void initView() {

@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.node.browser.R;
 import com.node.browser.webviewmanager.NWebview;
+import com.node.browser.webviewmanager.NWebview.UrlAreaHidenOrShowDelegate;
 import com.node.browser.webviewmanager.NWebview.UrlStatusObserver;
 import com.node.browser.webviewmanager.WebViewManager;
 import com.node.log.NLog;
@@ -25,6 +26,7 @@ public class FragBaseWebviewPage extends NFragment {
 	private final static String TAG = FragBaseWebviewPage.class.getName();
 
 	private NWebview.UrlStatusObserver mUrlStatusObserver;
+	private NWebview.UrlAreaHidenOrShowDelegate mUrlAreaHidenShowDelegate;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,11 @@ public class FragBaseWebviewPage extends NFragment {
 		webView = (NWebview) view.findViewById(R.id.webview);
 		mWebviewContainer = (LinearLayout) view
 				.findViewById(R.id.webview_container);
-		
+
 		initWebview(webView);
 		webView.setUrlStatusObserver(mUrlStatusObserver);
-		
+		webView.setUrlAreaHidenOrShowDelegate(mUrlAreaHidenShowDelegate);
+
 		if (invoker != null) {
 			invoker.loadWithMessage(webView);
 			invoker.loadWithUrl(webView);
@@ -61,7 +64,7 @@ public class FragBaseWebviewPage extends NFragment {
 				if (url.startsWith("newwindow:")) {
 					WebViewManager.instance().loadingUrlInNewWindow(
 							url.substring(10), FragBaseWebviewPage.this,
-							mUrlStatusObserver);
+							mUrlStatusObserver, mUrlAreaHidenShowDelegate);
 				} else {
 					view.loadUrl(url); // load url in current WebView
 				}
@@ -172,6 +175,11 @@ public class FragBaseWebviewPage extends NFragment {
 
 	public void setUrlStatusObserver(UrlStatusObserver observer) {
 		mUrlStatusObserver = observer;
+	}
+
+	public void setUrlAreaHidenOrShowDelegate(
+			UrlAreaHidenOrShowDelegate urlHidenShowDelegate) {
+		mUrlAreaHidenShowDelegate = urlHidenShowDelegate;
 	}
 
 }

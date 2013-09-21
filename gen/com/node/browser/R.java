@@ -52,6 +52,9 @@ public final class R {
         /**  对话框标题字体 
          */
         public static final int dialog_title_textsize=0x7f040004;
+        /**  顶部url输入框高度 
+         */
+        public static final int header_url_inputarea_height=0x7f040008;
     }
     public static final class drawable {
         public static final int a4=0x7f020000;
@@ -61,16 +64,16 @@ public final class R {
         public static final int temp_node_logo=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f090022;
-        public static final int bottom_op_book_mark=0x7f09001d;
-        public static final int bottom_op_current_history=0x7f09001c;
-        public static final int bottom_op_download_manager=0x7f09001e;
-        public static final int bottom_op_fresh_or_stop=0x7f09001b;
-        public static final int bottom_op_goback=0x7f090019;
-        public static final int bottom_op_goforward=0x7f09001a;
-        public static final int bottom_op_more=0x7f090020;
-        public static final int bottom_op_setting=0x7f09001f;
-        public static final int content_container=0x7f090014;
+        public static final int action_settings=0x7f090023;
+        public static final int bottom_op_book_mark=0x7f09001e;
+        public static final int bottom_op_current_history=0x7f09001d;
+        public static final int bottom_op_download_manager=0x7f09001f;
+        public static final int bottom_op_fresh_or_stop=0x7f09001c;
+        public static final int bottom_op_goback=0x7f09001a;
+        public static final int bottom_op_goforward=0x7f09001b;
+        public static final int bottom_op_more=0x7f090021;
+        public static final int bottom_op_setting=0x7f090020;
+        public static final int content_container=0x7f090015;
         public static final int dialog_btn_cancel=0x7f090006;
         public static final int dialog_btn_ensure=0x7f090005;
         public static final int dialog_checkbox=0x7f090003;
@@ -78,22 +81,23 @@ public final class R {
         public static final int dialog_ensure_cancel_container=0x7f090000;
         public static final int dialog_operation_area=0x7f090004;
         public static final int dialog_title=0x7f090001;
-        public static final int header_area=0x7f09000c;
-        public static final int header_search_input_area=0x7f090012;
-        public static final int header_url_container_father=0x7f09000d;
-        public static final int header_url_input_container=0x7f09000e;
-        public static final int listview_history=0x7f090018;
-        public static final int node_webview=0x7f090021;
-        public static final int s_bottom=0x7f090015;
-        public static final int search_content=0x7f090013;
+        public static final int header_area=0x7f09000d;
+        public static final int header_line=0x7f09000c;
+        public static final int header_search_input_area=0x7f090013;
+        public static final int header_url_container_father=0x7f09000e;
+        public static final int header_url_input_container=0x7f09000f;
+        public static final int listview_history=0x7f090019;
+        public static final int node_webview=0x7f090022;
+        public static final int s_bottom=0x7f090016;
+        public static final int search_content=0x7f090014;
         public static final int splash_dialog_bg_area=0x7f090007;
         public static final int splash_node_logo=0x7f090008;
         public static final int splash_node_logo_name=0x7f090009;
-        public static final int unused_location_search_area=0x7f09000f;
-        public static final int url_content=0x7f090011;
-        public static final int url_history_area=0x7f090017;
-        public static final int url_indicator=0x7f090010;
-        public static final int viewpager_content_view_container=0x7f090016;
+        public static final int unused_location_search_area=0x7f090010;
+        public static final int url_content=0x7f090012;
+        public static final int url_history_area=0x7f090018;
+        public static final int url_indicator=0x7f090011;
+        public static final int viewpager_content_view_container=0x7f090017;
         public static final int webview=0x7f09000b;
         public static final int webview_container=0x7f09000a;
     }
