@@ -164,37 +164,27 @@ public class NWebview extends WebView {
 	private void hidenOrShowHeaderUrlArea(int l, int t, int oldl, int oldt) {
 		long currentMillis = System.currentTimeMillis();
 		int currentTop = t;
-		if (lastMillis == 0 || currentMillis - lastMillis >= 2 * 1000) {
+		if (lastMillis == 0 || currentMillis - lastMillis > 500) {
 			lastMillis = currentMillis;
-		}
-		if (lastTop == 0) {
 			lastTop = currentTop;
 		}
-
-		boolean timePermiss = currentMillis - lastMillis >= 300;// 时间允许，间隔超过200毫秒
-		boolean isUp = t - oldt > 0;// 判断用户是否意图向上滑动
-		boolean lengthPermiss = currentTop - lastTop > headerHeight;// 上滑的距离允许
-
-		// 显示Url区域
-		if (!isUp && timePermiss && urlAreaHidenOrShowDeletegate != null) {
-			// 确保webview与顶部Url输入框的一对一关系
-			NWebview webview = WebViewManager.instance().currentWebview();
-			if (webview.equals(this)) {
-				urlAreaHidenOrShowDeletegate.onShowUrlArea();
+		boolean isDown = t - oldt > 0;// 判断用户是否意图向上滑动
+		if (isDown) {
+			if (currentTop - lastTop > headerHeight
+					&& currentTop > 1.5 * headerHeight) {
+				NWebview webview = WebViewManager.instance().currentWebview();
+				if (webview.equals(this)) {
+					urlAreaHidenOrShowDeletegate.onHidenUrlArea();
+				}
+				lastTop = currentTop;
 			}
-			lastMillis = currentMillis;
-			lastTop = currentTop;
-		}
-		// 隐藏url区域
-		if (isUp && timePermiss && lengthPermiss
-				&& urlAreaHidenOrShowDeletegate != null) {
-			// 确保webview与顶部Url输入框的一对一关系
-			NWebview webview = WebViewManager.instance().currentWebview();
-			if (webview.equals(this)) {
-				urlAreaHidenOrShowDeletegate.onHidenUrlArea();
+		} else {
+			if (currentTop <= 4 * headerHeight) {
+				NWebview webview = WebViewManager.instance().currentWebview();
+				if (webview.equals(this)) {
+					urlAreaHidenOrShowDeletegate.onShowUrlArea();
+				}
 			}
-			lastMillis = currentMillis;
-			lastTop = currentTop;
 		}
 	}
 

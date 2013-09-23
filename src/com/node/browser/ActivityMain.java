@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
@@ -102,10 +103,10 @@ public class ActivityMain extends FragmentActivity {
 	/**
 	 * 顶部Url输入区域 显示状态的TAG
 	 */
-	private final String TAG_SHOWN = "shown";
-	private final String TAG_SHOWING = "showing";
-	private final String TAG_HIDEN = "hiden";
-	private final String TAG_HIDING = "hiding";
+	private final String TAG_HEADER_SHOWN = "shown";
+	private final String TAG_HEADER_SHOWING = "showing";
+	private final String TAG_HEADER_HIDEN = "hiden";
+	private final String TAG_HEADER_HIDING = "hiding";
 
 	final long DEFAULT_ANIM_DURATION = 150l;
 	final long DEFAULT_ANIM_DURATION_HISTORY_SHOW = 500l;// 显示历史记录时的动画时间
@@ -316,7 +317,8 @@ public class ActivityMain extends FragmentActivity {
 
 					@Override
 					public void onPageScrolled(int arg0, float arg1, int arg2) {
-
+						NLog.e("pagescroll", "scrolling");
+						forceShowArea();
 					}
 
 					@Override
@@ -672,20 +674,22 @@ public class ActivityMain extends FragmentActivity {
 
 	private float mHeaderHeight = 0; // 顶部Url区域高度
 	private final long DEFAULT_HEADER_SHOW_HIDEN_DURATION = 100; // 显示、隐藏头部区域的时间戳
+	private ObjectAnimator animOnShow;// 显示时的动画
+	private ObjectAnimator animOnHiden;// 隐藏时的动画
 
 	/* 隐藏和显示顶部Url输入框 */
 	private void showHeaderArea() {
-		String tag = getHeaderAreaTag(TAG_SHOWN);
-		if (!tag.equals(TAG_HIDEN)) {
+		String tag = getHeaderAreaTag(TAG_HEADER_SHOWN);
+		if (!tag.equals(TAG_HEADER_HIDEN)) {
 			return;
 		}
 		float height = getHeaderHeight();
-		ObjectAnimator anim = ObjectAnimator.ofFloat(mHeaderArea, "y", -height,
-				0);
-		anim.addListener(new Animator.AnimatorListener() {
+		ObjectAnimator animOnShow = ObjectAnimator.ofFloat(mHeaderArea, "y",
+				-height, 0);
+		animOnShow.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator animation) {
-				setHeaderAreaTag(TAG_SHOWING);
+				setHeaderAreaTag(TAG_HEADER_SHOWING);
 			}
 
 			@Override
@@ -694,30 +698,30 @@ public class ActivityMain extends FragmentActivity {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				setHeaderAreaTag(TAG_SHOWN);
+				setHeaderAreaTag(TAG_HEADER_SHOWN);
 			}
 
 			@Override
 			public void onAnimationCancel(Animator animation) {
 			}
 		});
-		anim.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
-		anim.setInterpolator(new AccelerateDecelerateInterpolator());
-		anim.start();
+		animOnShow.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
+		animOnShow.setInterpolator(new AccelerateInterpolator());
+		animOnShow.start();
 	}
 
 	private void hidenHeaderArea() {
-		String tag = getHeaderAreaTag(TAG_SHOWN);
-		if (!tag.equals(TAG_SHOWN)) {
+		String tag = getHeaderAreaTag(TAG_HEADER_SHOWN);
+		if (!tag.equals(TAG_HEADER_SHOWN)) {
 			return;
 		}
 		float height = getHeaderHeight();
-		ObjectAnimator anim = ObjectAnimator.ofFloat(mHeaderArea, "y", 0,
-				-height);
-		anim.addListener(new Animator.AnimatorListener() {
+		ObjectAnimator animOnHiden = ObjectAnimator.ofFloat(mHeaderArea, "y",
+				0, -height);
+		animOnHiden.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator animation) {
-				setHeaderAreaTag(TAG_HIDING);
+				setHeaderAreaTag(TAG_HEADER_HIDING);
 			}
 
 			@Override
@@ -726,16 +730,29 @@ public class ActivityMain extends FragmentActivity {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				setHeaderAreaTag(TAG_HIDEN);
+				setHeaderAreaTag(TAG_HEADER_HIDEN);
 			}
 
 			@Override
 			public void onAnimationCancel(Animator animation) {
 			}
 		});
-		anim.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
-		anim.setInterpolator(new AccelerateDecelerateInterpolator());
-		anim.start();
+		animOnHiden.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
+		animOnHiden.setInterpolator(new AccelerateInterpolator());
+		animOnHiden.start();
+	}
+
+	/* 强制显示HeaderUrlArea */
+	private void forceShowArea() {
+		String tag = getHeaderAreaTag(TAG_HEADER_HIDEN);
+		if (tag.equals(TAG_HEADER_SHOWING) || tag.equals(TAG_HEADER_SHOWN)) {
+			return;
+		}
+		if (tag.equals(TAG_HEADER_HIDING) && animOnHiden != null) {
+			animOnHiden.cancel();
+		}
+		mHeaderArea.setY(0);
+		setHeaderAreaTag(TAG_HEADER_SHOWN);
 	}
 
 	private String getHeaderAreaTag(String defTag) {
