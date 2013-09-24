@@ -116,16 +116,6 @@ public class ActivityMain extends FragmentActivity {
 	// test
 	int msg_show = 100;
 	int msg_hiden = 101;
-	Handler testHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			if (msg.what == msg_show) {
-				showHeaderArea();
-			}
-			if (msg.what == msg_hiden) {
-				hidenHeaderArea();
-			}
-		};
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -169,10 +159,6 @@ public class ActivityMain extends FragmentActivity {
 						((ActivityECCheckBoxDialog) activity).dismiss();
 					}
 				});
-		testHandler.sendMessageDelayed(Message.obtain(testHandler, msg_hiden),
-				5000);
-		testHandler.sendMessageDelayed(Message.obtain(testHandler, msg_show),
-				8000);
 	}
 
 	@Override

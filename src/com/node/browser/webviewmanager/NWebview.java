@@ -164,7 +164,7 @@ public class NWebview extends WebView {
 	private void hidenOrShowHeaderUrlArea(int l, int t, int oldl, int oldt) {
 		long currentMillis = System.currentTimeMillis();
 		int currentTop = t;
-		if (lastMillis == 0 || currentMillis - lastMillis > 500) {
+		if (lastMillis == 0 || currentMillis - lastMillis > 300) {
 			lastMillis = currentMillis;
 			lastTop = currentTop;
 		}
@@ -179,7 +179,7 @@ public class NWebview extends WebView {
 				lastTop = currentTop;
 			}
 		} else {
-			if (currentTop <= 4 * headerHeight) {
+			if (currentTop <= 6 * headerHeight) {
 				NWebview webview = WebViewManager.instance().currentWebview();
 				if (webview.equals(this)) {
 					urlAreaHidenOrShowDeletegate.onShowUrlArea();

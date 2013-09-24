@@ -16,8 +16,8 @@
             android:id="@+id/header_line"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/header_url_inputarea_height"
-            android:orientation="vertical" 
-            android:background="#600000"
+            android:orientation="vertical"
+            android:background="#00ffffff"
             >
         </LinearLayout>
     </com.node.browser.webviewmanager.NWebview>
