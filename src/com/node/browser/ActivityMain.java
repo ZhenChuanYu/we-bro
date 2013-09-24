@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.node.browser.activity.dialogs.ActivityECCheckBoxDialog;
 import com.node.browser.activity.dialogs.ActivityECDialog;
 import com.node.browser.activity.dialogs.DialogUtil;
+import com.node.browser.cookie.NodeCookieManager;
 import com.node.browser.fragment.FragFirstPage;
 import com.node.browser.fragment.FragSecondPage;
 import com.node.browser.fragment.NFragment;
@@ -168,6 +169,18 @@ public class ActivityMain extends FragmentActivity {
 		 * outState.putSerializable(STATE_KEY_FRAGS, mFrags);
 		 */
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		NodeCookieManager.instance().startSync();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		NodeCookieManager.instance().stopSync();
 	}
 
 	private void initData(Bundle state) {
