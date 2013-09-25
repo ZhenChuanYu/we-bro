@@ -33,8 +33,8 @@ public class NodeCookieManager {
 	}
 
 	public static NodeCookieManager init(Context context) {
-		mCookieManager.getInstance();
-		mCookieSyncManager.createInstance(context);
+		mCookieManager = CookieManager.getInstance();
+		mCookieSyncManager = CookieSyncManager.createInstance(context);
 		return manager;
 	}
 

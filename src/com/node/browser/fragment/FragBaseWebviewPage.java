@@ -16,6 +16,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -103,6 +104,17 @@ public class FragBaseWebviewPage extends NFragment {
 			}
 		});
 
+		webView.setDownloadListener(new DownloadListener() {
+			@Override
+			public void onDownloadStart(String url, String userAgent,
+					String contentDisposition, String mimetype,
+					long contentLength) {
+				NLog.e("download", "url is:" + url + "\n userAgent is "
+						+ userAgent + "\n contentDis " + contentDisposition
+						+ "\n mimetype is " + mimetype + "\n contentLength is "
+						+ contentLength);
+			}
+		});
 	}
 
 	private FragBaseWebviewPage child = null;
