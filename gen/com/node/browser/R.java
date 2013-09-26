@@ -64,16 +64,18 @@ public final class R {
         public static final int temp_node_logo=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f090023;
-        public static final int bottom_op_book_mark=0x7f09001e;
-        public static final int bottom_op_current_history=0x7f09001d;
-        public static final int bottom_op_download_manager=0x7f09001f;
-        public static final int bottom_op_fresh_or_stop=0x7f09001c;
-        public static final int bottom_op_goback=0x7f09001a;
-        public static final int bottom_op_goforward=0x7f09001b;
-        public static final int bottom_op_more=0x7f090021;
-        public static final int bottom_op_setting=0x7f090020;
-        public static final int content_container=0x7f090015;
+        public static final int action_settings=0x7f090029;
+        public static final int appIcon=0x7f09000a;
+        public static final int bottom_op_book_mark=0x7f090024;
+        public static final int bottom_op_current_history=0x7f090023;
+        public static final int bottom_op_download_manager=0x7f090025;
+        public static final int bottom_op_fresh_or_stop=0x7f090022;
+        public static final int bottom_op_goback=0x7f090020;
+        public static final int bottom_op_goforward=0x7f090021;
+        public static final int bottom_op_more=0x7f090027;
+        public static final int bottom_op_setting=0x7f090026;
+        public static final int content_container=0x7f09001b;
+        public static final int description=0x7f09000d;
         public static final int dialog_btn_cancel=0x7f090006;
         public static final int dialog_btn_ensure=0x7f090005;
         public static final int dialog_checkbox=0x7f090003;
@@ -81,25 +83,29 @@ public final class R {
         public static final int dialog_ensure_cancel_container=0x7f090000;
         public static final int dialog_operation_area=0x7f090004;
         public static final int dialog_title=0x7f090001;
-        public static final int header_area=0x7f09000d;
-        public static final int header_line=0x7f09000c;
-        public static final int header_search_input_area=0x7f090013;
-        public static final int header_url_container_father=0x7f09000e;
-        public static final int header_url_input_container=0x7f09000f;
-        public static final int listview_history=0x7f090019;
-        public static final int node_webview=0x7f090022;
-        public static final int s_bottom=0x7f090016;
-        public static final int search_content=0x7f090014;
+        public static final int header_area=0x7f090013;
+        public static final int header_line=0x7f090012;
+        public static final int header_search_input_area=0x7f090019;
+        public static final int header_url_container_father=0x7f090014;
+        public static final int header_url_input_container=0x7f090015;
+        public static final int listview_history=0x7f09001f;
+        public static final int node_webview=0x7f090028;
+        public static final int progress_bar=0x7f09000e;
+        public static final int progress_text=0x7f09000b;
+        public static final int s_bottom=0x7f09001c;
+        public static final int search_content=0x7f09001a;
         public static final int splash_dialog_bg_area=0x7f090007;
         public static final int splash_node_logo=0x7f090008;
         public static final int splash_node_logo_name=0x7f090009;
-        public static final int unused_location_search_area=0x7f090010;
-        public static final int url_content=0x7f090012;
-        public static final int url_history_area=0x7f090018;
-        public static final int url_indicator=0x7f090011;
-        public static final int viewpager_content_view_container=0x7f090017;
-        public static final int webview=0x7f09000b;
-        public static final int webview_container=0x7f09000a;
+        public static final int status_text=0x7f09000f;
+        public static final int title=0x7f09000c;
+        public static final int unused_location_search_area=0x7f090016;
+        public static final int url_content=0x7f090018;
+        public static final int url_history_area=0x7f09001e;
+        public static final int url_indicator=0x7f090017;
+        public static final int viewpager_content_view_container=0x7f09001d;
+        public static final int webview=0x7f090011;
+        public static final int webview_container=0x7f090010;
     }
     public static final class layout {
         public static final int dialog_ensure_cancel_checkbox_tip=0x7f030000;
@@ -107,12 +113,13 @@ public final class R {
         public static final int dialog_splash=0x7f030002;
         public static final int laout_main=0x7f030003;
         public static final int node_bottom_nav_area=0x7f030004;
-        public static final int node_frag_basepage=0x7f030005;
-        public static final int node_frag_firstpage=0x7f030006;
-        public static final int node_frag_secondpage=0x7f030007;
-        public static final int node_header_input_area=0x7f030008;
-        public static final int node_middle_content_area=0x7f030009;
-        public static final int node_webview_item=0x7f03000a;
+        public static final int node_download_ongoing_notification=0x7f030005;
+        public static final int node_frag_basepage=0x7f030006;
+        public static final int node_frag_firstpage=0x7f030007;
+        public static final int node_frag_secondpage=0x7f030008;
+        public static final int node_header_input_area=0x7f030009;
+        public static final int node_middle_content_area=0x7f03000a;
+        public static final int node_webview_item=0x7f03000b;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;
@@ -120,6 +127,30 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int application_name=0x7f060000;
+        public static final int button_cancel_download=0x7f060014;
+        public static final int button_queue_for_wifi=0x7f060013;
+        public static final int button_start_now=0x7f060017;
+        /**  下载管理部分 
+         */
+        public static final int download_unknown_title=0x7f060002;
+        public static final int notification_download_complete=0x7f06000e;
+        public static final int notification_download_failed=0x7f06000f;
+        public static final int notification_filename_separator=0x7f06000d;
+        public static final int notification_need_wifi_for_size=0x7f060010;
+        public static final int permdesc_accessAllDownloads=0x7f06000c;
+        public static final int permdesc_downloadCacheNonPurgeable=0x7f06000a;
+        public static final int permdesc_downloadCompletedIntent=0x7f060008;
+        public static final int permdesc_downloadManager=0x7f060004;
+        public static final int permdesc_downloadManagerAdvanced=0x7f060006;
+        public static final int permlab_accessAllDownloads=0x7f06000b;
+        public static final int permlab_downloadCacheNonPurgeable=0x7f060009;
+        public static final int permlab_downloadCompletedIntent=0x7f060007;
+        public static final int permlab_downloadManager=0x7f060003;
+        public static final int permlab_downloadManagerAdvanced=0x7f060005;
+        public static final int wifi_recommended_body=0x7f060016;
+        public static final int wifi_recommended_title=0x7f060012;
+        public static final int wifi_required_body=0x7f060015;
+        public static final int wifi_required_title=0x7f060011;
     }
     public static final class style {
         /** 

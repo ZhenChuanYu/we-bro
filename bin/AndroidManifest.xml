@@ -49,6 +49,22 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/NodeDialogTheme" >
         </activity>
+
+        <!-- DownloadProvider相关 -->
+        <provider
+            android:name="com.node.downloadprovider.DownloadProvider"
+            android:authorities="com.node.download" />
+
+        <service android:name="com.node.downloadprovider.DownloadService" />
+
+        <receiver
+            android:name="com.node.downloadprovider.DownloadReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
