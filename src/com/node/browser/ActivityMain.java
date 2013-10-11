@@ -10,6 +10,7 @@ import com.node.browser.cookie.NodeCookieManager;
 import com.node.browser.fragment.FragFirstPage;
 import com.node.browser.fragment.FragSecondPage;
 import com.node.browser.fragment.NFragment;
+import com.node.browser.webviewmanager.HeaderAreaManager;
 import com.node.browser.webviewmanager.NWebview;
 import com.node.browser.webviewmanager.WebViewManager;
 import com.node.log.NLog;
@@ -121,7 +122,7 @@ public class ActivityMain extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		GlobalUtil.setFullScreen(this);
+		// GlobalUtil.setFullScreen(this);
 		PrefUtil.initPreferenceUtil(this);
 
 		setContentView(R.layout.laout_main);
@@ -147,7 +148,6 @@ public class ActivityMain extends FragmentActivity {
 		DialogUtil.showECCheckBoxDialog(this, "测试CheckBox", "测试内容",
 				"测试的checkbox内容", "key_setting",
 				new ActivityECCheckBoxDialog.ItfCancelCallback() {
-
 					@Override
 					public void onCancelClick(Activity activity,
 							boolean isChecked) {
@@ -205,17 +205,6 @@ public class ActivityMain extends FragmentActivity {
 					public void onUrlStatusChanged(boolean[] status,
 							NWebview webview) {
 						updateBottomBtnOperation(status);
-					}
-				}, new NWebview.UrlAreaHidenOrShowDelegate() {
-
-					@Override
-					public void onShowUrlArea() {
-						showHeaderArea();
-					}
-
-					@Override
-					public void onHidenUrlArea() {
-						hidenHeaderArea();
 					}
 				});
 	}
@@ -317,7 +306,7 @@ public class ActivityMain extends FragmentActivity {
 					@Override
 					public void onPageScrolled(int arg0, float arg1, int arg2) {
 						NLog.e("pagescroll", "scrolling");
-						forceShowArea();
+//						forceShowArea();
 					}
 
 					@Override
@@ -671,116 +660,13 @@ public class ActivityMain extends FragmentActivity {
 		oa.start();
 	}
 
-	private float mHeaderHeight = 0; // 顶部Url区域高度
-	private final long DEFAULT_HEADER_SHOW_HIDEN_DURATION = 100; // 显示、隐藏头部区域的时间戳
-	private ObjectAnimator animOnShow;// 显示时的动画
-	private ObjectAnimator animOnHiden;// 隐藏时的动画
-
-	/* 隐藏和显示顶部Url输入框 */
-	private void showHeaderArea() {
-		String tag = getHeaderAreaTag(TAG_HEADER_SHOWN);
-		if (!tag.equals(TAG_HEADER_HIDEN)) {
-			return;
-		}
-		float height = getHeaderHeight();
-		ObjectAnimator animOnShow = ObjectAnimator.ofFloat(mHeaderArea, "y",
-				-height, 0);
-		animOnShow.addListener(new Animator.AnimatorListener() {
-			@Override
-			public void onAnimationStart(Animator animation) {
-				setHeaderAreaTag(TAG_HEADER_SHOWING);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				setHeaderAreaTag(TAG_HEADER_SHOWN);
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-			}
-		});
-		animOnShow.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
-		animOnShow.setInterpolator(new AccelerateInterpolator());
-		animOnShow.start();
-	}
-
-	private void hidenHeaderArea() {
-		String tag = getHeaderAreaTag(TAG_HEADER_SHOWN);
-		if (!tag.equals(TAG_HEADER_SHOWN)) {
-			return;
-		}
-		float height = getHeaderHeight();
-		ObjectAnimator animOnHiden = ObjectAnimator.ofFloat(mHeaderArea, "y",
-				0, -height);
-		animOnHiden.addListener(new Animator.AnimatorListener() {
-			@Override
-			public void onAnimationStart(Animator animation) {
-				setHeaderAreaTag(TAG_HEADER_HIDING);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				setHeaderAreaTag(TAG_HEADER_HIDEN);
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-			}
-		});
-		animOnHiden.setDuration(DEFAULT_HEADER_SHOW_HIDEN_DURATION);
-		animOnHiden.setInterpolator(new AccelerateInterpolator());
-		animOnHiden.start();
-	}
-
-	/* 强制显示HeaderUrlArea */
-	private void forceShowArea() {
-		String tag = getHeaderAreaTag(TAG_HEADER_HIDEN);
-		if (tag.equals(TAG_HEADER_SHOWING) || tag.equals(TAG_HEADER_SHOWN)) {
-			return;
-		}
-		if (tag.equals(TAG_HEADER_HIDING) && animOnHiden != null) {
-			animOnHiden.cancel();
-		}
-		mHeaderArea.setY(0);
-		setHeaderAreaTag(TAG_HEADER_SHOWN);
-	}
-
-	private String getHeaderAreaTag(String defTag) {
-		Object tag = mHeaderArea.getTag();
-		if (tag == null || !(tag instanceof String)) {
-			return defTag;
-		}
-		return (String) tag;
-	}
-
-	private void setHeaderAreaTag(String tag) {
-		mHeaderArea.setTag(tag);
-	}
-
-	private float getHeaderHeight() {
-		if (mHeaderHeight == 0) {
-			mHeaderHeight = getResources().getDimension(
-					R.dimen.header_url_inputarea_height);
-		}
-		return mHeaderHeight;
-	}
-
 	private void initView() {
 		mETUrlInput = (EditText) findViewById(R.id.url_content);
 		mUrlContainer = (LinearLayout) findViewById(R.id.header_url_input_container);
 		mUrlContainerFather = (RelativeLayout) findViewById(R.id.header_url_container_father);
 		mUnusedLocationArea = (RelativeLayout) findViewById(R.id.unused_location_search_area);
 		mHeaderArea = (FrameLayout) findViewById(R.id.header_area);
-
+		HeaderAreaManager.instance().init(mHeaderArea);
 		mETSearchInput = (EditText) findViewById(R.id.search_content);
 		mSearchContainer = (LinearLayout) findViewById(R.id.header_search_input_area);
 

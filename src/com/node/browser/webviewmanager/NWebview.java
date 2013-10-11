@@ -139,7 +139,6 @@ public class NWebview extends WebView {
 		if (title != null) // undo horizontal scroll, so that title scrolls only
 							// vertically
 			title.offsetLeftAndRight(l - title.getLeft());
-		boolean needUpdateBound = false;
 		if (l <= 0) {
 			setScrollX(0);
 		}
@@ -150,41 +149,49 @@ public class NWebview extends WebView {
 		hidenOrShowHeaderUrlArea(l, t, oldl, oldt);
 	}
 
-	/**
-	 * 判断是否显示或隐藏顶部的组件
-	 * 
-	 * @see method {@link NWebview#hidenOrShowHeaderUrlArea(int, int, int, int)}<br>
-	 *      used in lifestyle method
-	 *      {@link #onScrollChanged(int, int, int, int)}<br>
-	 */
-	private long lastMillis = 0;
-	private int lastTop = 0;
-	private int headerHeight = (int) GlobalUtil.dip2px(getContext(), 40) + 1;
+	// /**
+	// * 判断是否显示或隐藏顶部的组件
+	// *
+	// * @see method {@link NWebview#hidenOrShowHeaderUrlArea(int, int, int,
+	// int)}<br>
+	// * used in lifestyle method
+	// * {@link #onScrollChanged(int, int, int, int)}<br>
+	// */
+	// private long lastMillis = 0;
+	// private int lastTop = 0;
+	// private int headerHeight = (int) GlobalUtil.dip2px(getContext(), 40) + 1;
+
+	// private void hidenOrShowHeaderUrlArea(int l, int t, int oldl, int oldt) {
+	// long currentMillis = System.currentTimeMillis();
+	// int currentTop = t;
+	// if (lastMillis == 0 || currentMillis - lastMillis > 300) {
+	// lastMillis = currentMillis;
+	// lastTop = currentTop;
+	// }
+	// boolean isDown = t - oldt > 0;// 判断用户是否意图向上滑动
+	// if (isDown) {
+	// if (currentTop - lastTop > headerHeight
+	// && currentTop > 1.5 * headerHeight) {
+	// NWebview webview = WebViewManager.instance().currentWebview();
+	// if (webview.equals(this)) {
+	// urlAreaHidenOrShowDeletegate.onHidenUrlArea();
+	// }
+	// lastTop = currentTop;
+	// }
+	// } else {
+	// if (currentTop <= 6 * headerHeight) {
+	// NWebview webview = WebViewManager.instance().currentWebview();
+	// if (webview.equals(this)) {
+	// urlAreaHidenOrShowDeletegate.onShowUrlArea();
+	// }
+	// }
+	// }
+	// }
 
 	private void hidenOrShowHeaderUrlArea(int l, int t, int oldl, int oldt) {
-		long currentMillis = System.currentTimeMillis();
-		int currentTop = t;
-		if (lastMillis == 0 || currentMillis - lastMillis > 300) {
-			lastMillis = currentMillis;
-			lastTop = currentTop;
-		}
-		boolean isDown = t - oldt > 0;// 判断用户是否意图向上滑动
-		if (isDown) {
-			if (currentTop - lastTop > headerHeight
-					&& currentTop > 1.5 * headerHeight) {
-				NWebview webview = WebViewManager.instance().currentWebview();
-				if (webview.equals(this)) {
-					urlAreaHidenOrShowDeletegate.onHidenUrlArea();
-				}
-				lastTop = currentTop;
-			}
-		} else {
-			if (currentTop <= 6 * headerHeight) {
-				NWebview webview = WebViewManager.instance().currentWebview();
-				if (webview.equals(this)) {
-					urlAreaHidenOrShowDeletegate.onShowUrlArea();
-				}
-			}
+		NWebview webview = WebViewManager.instance().currentWebview();
+		if (webview.equals(this)) {
+			HeaderAreaManager.instance().changeByDynamicWay(l, t, oldl, oldt);
 		}
 	}
 
@@ -208,23 +215,6 @@ public class NWebview extends WebView {
 		super.reload();
 		// 更新状态 isLoading为false，isWaiting为true
 		updateUrlStatus(false, true);
-	}
-
-	/*
-	 * webview通知 显示或隐藏Url输入区域接口
-	 */
-	public interface UrlAreaHidenOrShowDelegate {
-
-		void onHidenUrlArea();
-
-		void onShowUrlArea();
-	}
-
-	private UrlAreaHidenOrShowDelegate urlAreaHidenOrShowDeletegate;
-
-	public void setUrlAreaHidenOrShowDelegate(
-			UrlAreaHidenOrShowDelegate areaHidenOrShowDelegate) {
-		this.urlAreaHidenOrShowDeletegate = areaHidenOrShowDelegate;
 	}
 
 	/*

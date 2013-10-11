@@ -6,7 +6,6 @@ import java.util.Iterator;
 import com.node.browser.R;
 import com.node.browser.cookie.NodeCookieManager;
 import com.node.browser.webviewmanager.NWebview;
-import com.node.browser.webviewmanager.NWebview.UrlAreaHidenOrShowDelegate;
 import com.node.browser.webviewmanager.NWebview.UrlStatusObserver;
 import com.node.browser.webviewmanager.WebViewManager;
 import com.node.downloadprovider.DownloadManager;
@@ -32,7 +31,6 @@ public class FragBaseWebviewPage extends NFragment {
 	private final static String TAG = FragBaseWebviewPage.class.getName();
 
 	private NWebview.UrlStatusObserver mUrlStatusObserver;
-	private NWebview.UrlAreaHidenOrShowDelegate mUrlAreaHidenShowDelegate;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,6 @@ public class FragBaseWebviewPage extends NFragment {
 
 		initWebview(webView);
 		webView.setUrlStatusObserver(mUrlStatusObserver);
-		webView.setUrlAreaHidenOrShowDelegate(mUrlAreaHidenShowDelegate);
 
 		if (invoker != null) {
 			invoker.loadWithMessage(webView);
@@ -70,7 +67,7 @@ public class FragBaseWebviewPage extends NFragment {
 				if (url.startsWith("newwindow:")) {
 					WebViewManager.instance().loadingUrlInNewWindow(
 							url.substring(10), FragBaseWebviewPage.this,
-							mUrlStatusObserver, mUrlAreaHidenShowDelegate);
+							mUrlStatusObserver);
 				} else {
 					view.loadUrl(url); // load url in current WebView
 				}
@@ -205,11 +202,6 @@ public class FragBaseWebviewPage extends NFragment {
 
 	public void setUrlStatusObserver(UrlStatusObserver observer) {
 		mUrlStatusObserver = observer;
-	}
-
-	public void setUrlAreaHidenOrShowDelegate(
-			UrlAreaHidenOrShowDelegate urlHidenShowDelegate) {
-		mUrlAreaHidenShowDelegate = urlHidenShowDelegate;
 	}
 
 }
