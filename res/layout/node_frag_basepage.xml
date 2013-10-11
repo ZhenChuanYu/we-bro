@@ -10,15 +10,15 @@
         android:id="@+id/webview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layerType="software" >
+        android:layerType="software"
+        android:overScrollMode="never" >
 
         <LinearLayout
             android:id="@+id/header_line"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/header_url_inputarea_height"
-            android:orientation="vertical"
             android:background="#00ffffff"
-            >
+            android:orientation="vertical" >
         </LinearLayout>
     </com.node.browser.webviewmanager.NWebview>
 

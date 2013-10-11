@@ -95,10 +95,10 @@ public class Constants {
     public static final int BUFFER_SIZE = 1024;
 
     /** The minimum amount of progress that has to be done before the progress bar gets updated */
-    public static final int MIN_PROGRESS_STEP = 512;
+    public static final int MIN_PROGRESS_STEP = 1024;
 
     /** The minimum amount of time that has to elapse before the progress bar gets updated, in ms */
-    public static final long MIN_PROGRESS_TIME = 100;
+    public static final long MIN_PROGRESS_TIME = 500;
 
     /** The maximum number of rows in the database (FIFO) */
     public static final int MAX_DOWNLOADS = 2000;

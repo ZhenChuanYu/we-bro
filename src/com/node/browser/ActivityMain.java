@@ -121,7 +121,7 @@ public class ActivityMain extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		GlobalUtil.setFullScreen(this);
+//		GlobalUtil.setFullScreen(this);
 		PrefUtil.initPreferenceUtil(this);
 
 		setContentView(R.layout.laout_main);

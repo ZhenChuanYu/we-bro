@@ -52,7 +52,7 @@ public class NodeCookieManager {
 	}
 
 	public NodeCookieManager setAcceptFileSchemeCookies(boolean accept) {
-		mCookieManager.setAcceptFileSchemeCookies(accept);
+		CookieManager.setAcceptFileSchemeCookies(accept);
 		return this;
 	}
 

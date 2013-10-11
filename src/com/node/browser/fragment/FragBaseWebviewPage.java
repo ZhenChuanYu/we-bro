@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.node.browser.R;
+import com.node.browser.cookie.NodeCookieManager;
 import com.node.browser.webviewmanager.NWebview;
 import com.node.browser.webviewmanager.NWebview.UrlAreaHidenOrShowDelegate;
 import com.node.browser.webviewmanager.NWebview.UrlStatusObserver;
 import com.node.browser.webviewmanager.WebViewManager;
+import com.node.downloadprovider.DownloadManager;
+import com.node.downloadprovider.DownloadManager.Request;
 import com.node.log.NLog;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +118,19 @@ public class FragBaseWebviewPage extends NFragment {
 						+ userAgent + "\n contentDis " + contentDisposition
 						+ "\n mimetype is " + mimetype + "\n contentLength is "
 						+ contentLength);
+				// begin to download
+				DownloadManager manager = new DownloadManager(getActivity()
+						.getContentResolver(), getActivity().getPackageName());
+				DownloadManager.Request request = new Request(Uri.parse(url));
+				request.setDestinationInExternalPublicDir(
+						Environment.DIRECTORY_DOWNLOADS, "/");
+				request.setDescription("");
+				String cookie = NodeCookieManager.instance().getCookie(url);
+				NLog.e("download cookie is ", cookie);
+				request.addRequestHeader("Cookie", cookie);
+				// request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE|DownloadManager.Request.NETWORK_WIFI);
+				request.setShowRunningNotification(true);
+				manager.enqueue(request);
 			}
 		});
 	}
